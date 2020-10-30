@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/graywhite">
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/item_border"
+        android:gravity="center"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/neat_font"
+            android:text="채우다"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/neat_font"
+            android:text="하나이면\n 둘을 원하고 \n\n 둘이면\n 셋을 원하네"
+            android:textColor="#787878"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tv_writer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/neat_font"
+            android:gravity="center"
+            android:text="[호루라기]"
+            android:textColor="#C8C8C8"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/neat_font"
+            android:gravity="center"
+            android:text="2020년 08월 01일, 밤"
+            android:textColor="#C8C8C8"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
