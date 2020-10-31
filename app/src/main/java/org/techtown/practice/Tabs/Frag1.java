@@ -47,8 +47,6 @@ public class Frag1 extends Fragment {
         view = inflater.inflate(R.layout.frag1, container, false);
         btn_write = view.findViewById(R.id.btn_write);
 
-        Log.d("씨발!!!!!!!!!!!!!!!!!!!", "개새끼야!!!!!!!!!!!!");
-
         /*recycler view*/
         recyclerView = view.findViewById(R.id.frag1_recycle);
         linearLayoutManager = new LinearLayoutManager(getContext());

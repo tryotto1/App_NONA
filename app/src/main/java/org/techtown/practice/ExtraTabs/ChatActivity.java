@@ -1,5 +1,6 @@
 package org.techtown.practice.ExtraTabs;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,8 +9,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +33,7 @@ import java.util.Hashtable;
 public class ChatActivity extends AppCompatActivity {
     // firebase 데이터베이스를 가져온다
     FirebaseDatabase database;
+    private FirebaseAuth mAuth;
 
     // 데이터베이스에서 가져온 ref 를 계속 사용해주기 위해 전역 선언을 한다
     DatabaseReference myRef;
@@ -46,16 +50,25 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         // xml 연결
+        recyclerView = (RecyclerView) findViewById(R.id.chat_recycle);
         final EditText chat_msg = (EditText)findViewById(R.id.chat_msg);
         Button chat_btn =(Button)findViewById(R.id.btn_chat);
+
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
         // firebase 데이터베이스 연결
         database = FirebaseDatabase.getInstance();
 
         // 리사이클러 뷰를 위함
         chatArray = new ArrayList<>();
-        mAdapter = new chatAdapter(chatArray);
+        mAdapter = new chatAdapter(chatArray, getApplicationContext());
         recyclerView.setAdapter(mAdapter);
+
+        // 현재 내 이메일 가져오기
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        final String my_email = pref.getString("email", "");
 
         // 버튼 설정 - 메세지 보내기
         chat_btn.setOnClickListener(new View.OnClickListener() {
@@ -72,15 +85,12 @@ public class ChatActivity extends AppCompatActivity {
                 // 전달할 내용들 저장
                 Hashtable<String, String> msg
                         = new Hashtable<String, String>();
-                msg.put("email", "tryotto@naver.com");
-                msg.put("name", "sky");
+                msg.put("email", my_email);
                 msg.put("msg", str);
 
                 // firebase 데이터베이스에서, "message" 관련된 ref 를 가져온다
                 myRef = database.getReference("message").child(datetime);
                 myRef.setValue(msg);
-
-                Log.d("잘 됨","Tlqkf!!!!!!!!!!!");
             }
         });
 
@@ -91,15 +101,11 @@ public class ChatActivity extends AppCompatActivity {
                 // A new comment has been added, add it to the displayed list
                 chatData chat = dataSnapshot.getValue(chatData.class);
 
-                String stEmail = chat.getEmail();
-                String stName = chat.getName();
-                String stMsg = chat.getMsg();
+                Log.d("asd",""+chat.getMsg().toString());
 
                 // chat array 추가
                 chatArray.add(chat);
                 mAdapter.notifyDataSetChanged();
-
-                // ...
             }
 
             @Override

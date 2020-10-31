@@ -38,7 +38,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="30dp"
                 android:fontFamily="@font/neat_font"
-                android:text="나의 글"
+                android:text="구매 목록"
                 android:textSize="20sp" />
 
         </LinearLayout>
@@ -63,7 +63,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="30dp"
                 android:fontFamily="@font/neat_font"
-                android:text="좋아요"
+                android:text="찜 목록"
                 android:textSize="20sp" />
 
         </LinearLayout>
@@ -88,7 +88,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="30dp"
                 android:fontFamily="@font/neat_font"
-                android:text="팔로우"
+                android:text="친구목록"
                 android:textSize="20sp" />
 
         </LinearLayout>

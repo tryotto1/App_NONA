@@ -1,273 +1,157 @@
 package org.techtown.practice.ExtraTabs;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.techtown.practice.MainActivity;
 import org.techtown.practice.R;
 
-/* 통신용 */
-import org.json.JSONObject;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.Random;
 
 public class SignupActivity extends AppCompatActivity {
+    // firebase 회원가입용
+    private FirebaseAuth mAuth;
 
     // 입력을 받도록 하기 위한 form
-    private EditText et_id, et_password, et_name;
+    private EditText user_email, user_password;
     private TextView tv_signup;
+    private Button btn_email_verify, btn_pwd_check;
+    ProgressBar progressBar;
 
     // 입력 받은 string 값을 담기 위한 변수
-    String id, password, name;
-    String my_writer;
+    String email, password;
+
+    // 이메일 인증 번호
+    Boolean flag_email = Boolean.FALSE;
+    Boolean flag_pwd = Boolean.FALSE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        et_id = findViewById(R.id.et_id);
-        et_password = findViewById(R.id.et_password);
-        et_name = findViewById(R.id.et_name);
-        tv_signup = findViewById(R.id.et_name);
+        // firebase 회원가입용
+        mAuth = FirebaseAuth.getInstance();
 
-        tv_signup.setOnClickListener(new View.OnClickListener() {
+        // xml로부터 값들을 받아온다
+        user_email = findViewById(R.id.user_email);
+        user_password = findViewById(R.id.user_password);
+        tv_signup = findViewById(R.id.tv_signup);
+        btn_email_verify = findViewById(R.id.btn_email_verify);
+        btn_pwd_check = findViewById(R.id.btn_pwd_check);
+        progressBar = findViewById(R.id.progress);
+
+        // kupid 이메일인지 확인한다
+        flag_email = Boolean.TRUE;
+        btn_email_verify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                id = et_id.getText().toString();
-                password = et_password.getText().toString();
-                name = et_name.getText().toString();
+                email = user_email.getText().toString();
+                int idx_domain = email.indexOf("@");
 
-                // 회원가입 요청 보내기
-//                new signin_form().execute("http://192.168.123.1:8080/signin/");
-
-                Boolean success = true;
-                // 서버 통신 -> 아이디가 존재하는지 확인
-                if (success) {
-                    // 회원가입 한 이메일을 임시로 저장하기 위함
-                    SharedPreferences sharedPreferences = getSharedPreferences("cur_email", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("cur_email", id);
-                    editor.commit();
-                    Log.d("1111", "되라 제발");
-                    // 필명 가져오기
-//                    new get_name().execute("http://192.168.123.1:8080/get_name/");
-                    Log.d("22222", "되라 제발");
-                    Toast.makeText(view.getContext(), "성공적으로 계정을 생성하였습니다..", Toast.LENGTH_LONG).show();
-                    finish();
-                } else {
-                    Toast.makeText(view.getContext(), "존재하지 않는 계정입니다.", Toast.LENGTH_SHORT).show();
+                String email_domain = email.substring(idx_domain + 1);
+                if(email_domain.equals("korea.ac.kr")){
+                    Toast.makeText(SignupActivity.this, "올바른 이메일입니다", Toast.LENGTH_LONG).show();
+                    flag_email = Boolean.TRUE;
+                }else{
+                    Toast.makeText(SignupActivity.this, "고려대학교 이메일만 사용할 수 있습니다", Toast.LENGTH_LONG).show();
+                    flag_email = Boolean.FALSE;
                 }
             }
         });
 
+        // 버튼 클릭 시, 비밀번호 체크를 한다
+        btn_pwd_check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                password = user_password.getText().toString();
+
+                if(password.length() < 6){
+                    Toast.makeText(SignupActivity.this, "6자리 이상의 비밀번호를 작성하세요!",
+                            Toast.LENGTH_LONG).show();
+                    flag_pwd = Boolean.FALSE;
+                }else{
+                    Toast.makeText(SignupActivity.this, "적당한 비밀번호입니다!",
+                            Toast.LENGTH_LONG).show();
+                    flag_pwd = Boolean.TRUE;
+                }
+            }
+        });
+
+        // 버튼을 클릭했을 시, 회원가입이 될 수 있도록 함
+        tv_signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // progress bar 가 보이도록 한다
+                progressBar.setVisibility(View.VISIBLE);
+
+                if((flag_email==Boolean.TRUE)&&(flag_pwd==Boolean.TRUE)) {
+                    email = user_email.getText().toString();
+                    password = user_password.getText().toString();
+
+                    // 중복 체크용 - 이메일
+                    mAuth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // 이메일 인증용
+                                        mAuth.getCurrentUser().sendEmailVerification()
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        // progress bar 가 사라지도록 한다
+                                                        progressBar.setVisibility(View.GONE);
+
+                                                        if (task.isSuccessful()) {
+                                                            Toast.makeText(SignupActivity.this, "인증 메일이 발송되었습니다",
+                                                                    Toast.LENGTH_LONG).show();
+                                                            Toast.makeText(SignupActivity.this, "인증을 완료 후 로그인해주세요",
+                                                                    Toast.LENGTH_LONG).show();
+
+                                                            // 일단 로그인 화면으로 보낸다
+                                                            finish();
+                                                        }
+                                                    }
+                                                });
+                                    } else {
+                                        // progress bar 가 사라지도록 한다
+                                        progressBar.setVisibility(View.GONE);
+
+                                        Toast.makeText(SignupActivity.this, "이미 가입되어 있는 회원입니다",
+                                                Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+                }else{
+                    Toast.makeText(SignupActivity.this, "이메일과 비밀번호 체크를 완료해 주세요",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
-    // 전달받은 이메일을 이용해서, 필명을 가져온다
-    public class get_name extends AsyncTask<String, String, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            try {
-                HttpURLConnection con = null;
-                BufferedReader reader = null;
-
-                try {
-                    URL url = new URL(urls[0]);
-
-                    // 연결을 해준다
-                    con = (HttpURLConnection) url.openConnection();
-
-                    // 연결 설정해주기
-                    con.setRequestMethod("POST");
-                    con.setRequestProperty("Cache-Control", "no-cache");
-                    con.setRequestProperty("Content-Type", "application/json");
-                    con.setRequestProperty("Accept", "text/html");
-                    con.setDoOutput(true);
-                    con.connect();
-
-                    // 서버로 보낼 스트림 -> 이걸 이용한 버퍼 생성
-                    OutputStream outStream = con.getOutputStream();
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
-
-                    String tmp = "{\"my_email\":\""+id+"\"}";
-                    writer.write(tmp);
-                    Log.d("잘 되니3333? tmp 값", "doInBackground: >>>>>>>>>>>>>>>" + tmp);
-                    writer.flush();
-                    writer.close();
-
-                    // 서버로부터 데이터 받음 -> 이걸 이용한 버퍼 생성
-                    InputStream stream = con.getInputStream();
-                    reader = new BufferedReader(new InputStreamReader(stream));
-
-                    // 결과로 리턴 될 버퍼
-                    StringBuffer buffer = new StringBuffer();
-
-                    // 버퍼 리더로부터 문자열을 받은걸 결과 버퍼에 담는다
-                    String line = "";
-                    while ((line = reader.readLine()) != null) {
-                        buffer.append(line);
-                    }
-
-                    JSONObject tmp_json = new JSONObject(buffer.toString());
-
-                    Log.d("json 어레이 ", "doInBackground: >>>>>>>>>" + tmp_json.getString("my_name"));
-
-                    my_writer = tmp_json.getString("my_name");
-
-                    // 로그인 된 필명을 임시로 저장하기 위함
-                    SharedPreferences sharedPreferences_name = getSharedPreferences("cur_name",MODE_PRIVATE);
-                    SharedPreferences.Editor editor_name = sharedPreferences_name.edit();
-                    editor_name.putString("cur_name", my_writer);
-                    Log.d("됨!", "" + my_writer);
-                    editor_name.commit();
-
-                    // 결과 버퍼 내용을 문자열로 바꿔서 리턴한다
-                    return buffer.toString();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally
-                {
-                    if (con != null) {
-                        con.disconnect();
-                    }
-                    try
-                    {
-                        if (reader != null) {
-                            reader.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-        }
-    }
-
-    // 회원 가입을 위한 서버 연동
-    public class signin_form extends AsyncTask<String, String, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            try {
-                HttpURLConnection con = null;
-                BufferedReader reader = null;
-
-                try {
-                    URL url = new URL(urls[0]);
-
-                    // 연결을 해준다
-                    con = (HttpURLConnection) url.openConnection();
-
-                    // 연결 설정해주기
-                    con.setRequestMethod("POST");
-                    con.setRequestProperty("Cache-Control", "no-cache");
-                    con.setRequestProperty("Content-Type", "application/json");
-                    con.setRequestProperty("Accept", "text/html");
-                    con.setDoOutput(true);
-                    con.setDoInput(true);
-                    con.connect();
-
-                    // 서버로 보낼 스트림 -> 이걸 이용한 버퍼 생성
-                    OutputStream outStream = con.getOutputStream();
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
-
-                    String tmp = "{\"my_email\":\""+id+"\", \"my_pwd\": \"" + password + "\", \"my_name\" : \""+name+"\"}";
-                    writer.write(tmp);
-
-                    Log.d("잘 되니? tmp 값", "doInBackground: >>>>>>>>>>>>>>>" + tmp);
-
-                    writer.flush();
-                    writer.close();
-
-                    // 서버로부터 데이터 받음 -> 이걸 이용한 버퍼 생성
-                    InputStream stream = con.getInputStream();
-                    reader = new BufferedReader(new InputStreamReader(stream));
-
-                    // 결과로 리턴 될 버퍼
-                    StringBuffer buffer = new StringBuffer();
-
-                    // 버퍼 리더로부터 문자열을 받은걸 결과 버퍼에 담는다
-                    String line = "";
-                    while ((line = reader.readLine()) != null) {
-                        buffer.append(line);
-                    }
-
-                    JSONObject tmp_json = new JSONObject(buffer.toString());
-                    String signin_flag = tmp_json.getString("flag");
-
-                    if(signin_flag.equals("true")){
-                        Log.d("회원가입? ", "doInBackground: >>>>>> 회원가입 성공!");
-
-                        Intent intent = new Intent(SignupActivity.this, MainActivity.class);
-                        SignupActivity.this.startActivity(intent);
-                        finish();
-                    }else{
-                        SignupActivity.this.runOnUiThread(new Runnable() {
-                            public void run() {
-                                Toast.makeText(SignupActivity.this,  "이미 존재하는 이메일입니다.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        Log.d("회원가입? ", "doInBackground: >>>>>> 회원가입 실패 ㅠㅠ");
-                    }
-
-                    // 결과 버퍼 내용을 문자열로 바꿔서 리턴한다
-                    return buffer.toString();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally
-                {
-                    if (con != null) {
-                        con.disconnect();
-                    }
-                    try
-                    {
-                        if (reader != null) {
-                            reader.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-        }
+    /* 중복 가입 방지를 위함 - 시작하자마자, 회원가입이 돼있는지 파악함 */
+    @Override
+    public void onStart() {
+        super.onStart();
+        // 해당 유저가 실제 회원인지 확인한다
+        FirebaseUser currentUser = mAuth.getCurrentUser();
     }
 }
