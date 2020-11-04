@@ -89,8 +89,6 @@ public class Tab1_WriteActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 write_index = Integer.parseInt(dataSnapshot.getValue().toString());
-                Log.d(">>>>>>index 구하기111111", "onDataChange: " + dataSnapshot.getValue().toString());
-                Log.d(">>>>>>index 구하기222222", "onDataChange: " + write_index);
             }
 
             @Override
@@ -108,15 +106,11 @@ public class Tab1_WriteActivity extends AppCompatActivity {
                 writing = et_write.getText().toString();
 
                 /* 쓴 글을 데이터베이스에 기록해준다 */
-
-                Log.d(">>>>>>>>", "onClick: "+title+"  "+writing);
-
                 writeData = new Tab_WriteData();
                 writeData.setTitle(title);
                 writeData.setTxt_content(writing);
 
                 // 글 자체를 저장해준다
-                Log.d(">>>>>>>>> 실제 저장시 인덱스 ", "onClick: " + write_index);
                 myRef_write = database.getReference("writings").child(String.valueOf(write_index + 1));
                 myRef_write.setValue(writeData);
 
