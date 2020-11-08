@@ -86,9 +86,7 @@ public class chatAdapter extends RecyclerView.Adapter<chatAdapter.MyViewHolder> 
         // 내 이메일이 아닌 채팅만 뷰홀더를 따로 추가해준다
         SharedPreferences pref = context.getSharedPreferences("pref", context.MODE_PRIVATE);
         String my_email = pref.getString("email", " ");
-        if(mDataset.get(position).getEmail().equals(my_email)==false){
-            holder.email_icon.setText(mDataset.get(position).getEmail());
-        }
+        holder.email_icon.setText(mDataset.get(position).getEmail());
     }
 
     @Override

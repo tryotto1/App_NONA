@@ -18,24 +18,37 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.techtown.practice.MainActivity;
 import org.techtown.practice.R;
+import org.techtown.practice.chat_recycler.chatData;
 
+import java.util.Hashtable;
 import java.util.Random;
 
 public class SignupActivity extends AppCompatActivity {
+    // firebase 데이터베이스를 가져온다
+    FirebaseDatabase database;
+
+    // 데이터베이스에서 가져온 ref 를 계속 사용해주기 위해 전역 선언을 한다
+    DatabaseReference myRef;
+
     // firebase 회원가입용
     private FirebaseAuth mAuth;
 
     // 입력을 받도록 하기 위한 form
-    private EditText user_email, user_password;
+    private EditText user_email, user_password, user_name;
     private TextView tv_signup;
-    private Button btn_email_verify, btn_pwd_check;
+    private Button btn_email_verify, btn_pwd_check, btn_name_check;
     ProgressBar progressBar;
 
     // 입력 받은 string 값을 담기 위한 변수
-    String email, password;
+    String email, password, name;
 
     // 이메일 인증 번호
     Boolean flag_email = Boolean.FALSE;
@@ -46,15 +59,20 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        // firebase 데이터베이스 연결
+        database = FirebaseDatabase.getInstance();
+
         // firebase 회원가입용
         mAuth = FirebaseAuth.getInstance();
 
         // xml로부터 값들을 받아온다
         user_email = findViewById(R.id.user_email);
         user_password = findViewById(R.id.user_password);
+        user_name = findViewById(R.id.use_name);
         tv_signup = findViewById(R.id.tv_signup);
         btn_email_verify = findViewById(R.id.btn_email_verify);
         btn_pwd_check = findViewById(R.id.btn_pwd_check);
+        btn_name_check = findViewById(R.id.btn_name_check);
         progressBar = findViewById(R.id.progress);
 
         // kupid 이메일인지 확인한다
@@ -98,12 +116,11 @@ public class SignupActivity extends AppCompatActivity {
         tv_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // progress bar 가 보이도록 한다
-                progressBar.setVisibility(View.VISIBLE);
 
                 if((flag_email==Boolean.TRUE)&&(flag_pwd==Boolean.TRUE)) {
                     email = user_email.getText().toString();
                     password = user_password.getText().toString();
+                    name = user_name.getText().toString();
 
                     // 중복 체크용 - 이메일
                     mAuth.createUserWithEmailAndPassword(email, password)
@@ -111,14 +128,28 @@ public class SignupActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
+
+                                        // 관련 정보를 firebase에 새로 데이터베이스를 만들어서 저장
+                                        Hashtable<String, String> info
+                                                = new Hashtable<String, String>();
+                                        info.put("name", name);
+//                                        info.put("my_write", "내가 쓴 글들 인덱스 목록");
+//                                        info.put("my_buy", "내가 구매한 글들 인덱스 목록");
+//                                        info.put("my_dib", "내가 찜한 글들 인덱스 목록");
+
+                                        // user 이메일에서, 앞부분만 떼어 온다 (firebase 규칙때문)
+                                        int idx_domain = email.indexOf("@");
+                                        String email_id = email.substring(0, idx_domain);
+
+                                        // firebase 데이터베이스에 user 관련 정보를 저장해준다
+                                        myRef = database.getReference("user").child(email_id);
+                                        myRef.setValue(info);
+
                                         // 이메일 인증용
                                         mAuth.getCurrentUser().sendEmailVerification()
                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
-                                                        // progress bar 가 사라지도록 한다
-                                                        progressBar.setVisibility(View.GONE);
-
                                                         if (task.isSuccessful()) {
                                                             Toast.makeText(SignupActivity.this, "인증 메일이 발송되었습니다",
                                                                     Toast.LENGTH_LONG).show();
@@ -131,8 +162,6 @@ public class SignupActivity extends AppCompatActivity {
                                                     }
                                                 });
                                     } else {
-                                        // progress bar 가 사라지도록 한다
-                                        progressBar.setVisibility(View.GONE);
 
                                         Toast.makeText(SignupActivity.this, "이미 가입되어 있는 회원입니다",
                                                 Toast.LENGTH_LONG).show();

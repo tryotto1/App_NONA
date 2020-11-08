@@ -53,6 +53,9 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.chat_recycle);
         final EditText chat_msg = (EditText)findViewById(R.id.chat_msg);
         Button chat_btn =(Button)findViewById(R.id.btn_chat);
+        Button buy_btn =(Button)findViewById(R.id.btn_buy);
+        Button borrow_btn =(Button)findViewById(R.id.btn_borrow);
+        Button give_back_btn =(Button)findViewById(R.id.btn_give_back);
 
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
@@ -69,6 +72,44 @@ public class ChatActivity extends AppCompatActivity {
         // 현재 내 이메일 가져오기
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         final String my_email = pref.getString("email", "");
+
+        // 게시물 번호 가져오기
+        final String idx_writing = pref.getString("idx_writing", " ");
+        Log.d("게시물 번호 >> ", "onCreate: " + idx_writing);
+
+        // 버튼 설정 - 구매 확정 하기
+        buy_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // firebase 데이터베이스에서, "writing" 관련된 ref 를 가져온다
+                myRef = database.getReference("writing").child(""+idx_writing).child("flag_buy");
+                myRef.setValue("yes");
+
+                // firebase 데이터베이스에서, "user point" 관련된 ref 를 가져온다
+                myRef = database.getReference("user").child(""+idx_writing).child("flag_buy");
+                myRef.setValue("yes");
+            }
+        });
+
+        // 버튼 설정 - 빌려주기 확정
+        borrow_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // firebase 데이터베이스에서, "writing" 관련된 ref 를 가져온다
+                myRef = database.getReference("writing").child(""+idx_writing).child("flag_borrow");
+                myRef.setValue("yes");
+            }
+        });
+
+        // 버튼 설정 - 돌려주기 확정 하기
+        give_back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // firebase 데이터베이스에서, "writing" 관련된 ref 를 가져온다
+                myRef = database.getReference("writing").child(""+idx_writing).child("flag_give_back");
+                myRef.setValue("yes");
+            }
+        });
 
         // 버튼 설정 - 메세지 보내기
         chat_btn.setOnClickListener(new View.OnClickListener() {
@@ -89,13 +130,16 @@ public class ChatActivity extends AppCompatActivity {
                 msg.put("msg", str);
 
                 // firebase 데이터베이스에서, "message" 관련된 ref 를 가져온다
-                myRef = database.getReference("message").child(datetime);
+                myRef = database.getReference("message").child(idx_writing).child(datetime);
                 myRef.setValue(msg);
+
+                // 채팅 입력창 초기화
+                chat_msg.getText().clear();
             }
         });
 
         // firebase에 올라온 채팅 내용을 실시간으로 업데이트 해주는 listener
-        ChildEventListener childEventListener = new ChildEventListener() {
+        ChildEventListener childEventListener_chat = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 // A new comment has been added, add it to the displayed list
@@ -139,6 +183,6 @@ public class ChatActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         };
-        database.getReference("message").addChildEventListener(childEventListener);
+        database.getReference("message").child(idx_writing).addChildEventListener(childEventListener_chat);
     }
 }

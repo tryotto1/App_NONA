@@ -1,17 +1,13 @@
 package org.techtown.practice.tab1_recycler;
 
-public class Tab1Data {
-    private String title, content, date, writer, email;
-    private int id_num;
+import android.util.Log;
 
-    public Tab1Data(String title, String content, String date, String writer, String email, int id_num) {
-        this.title = title;
-        this.content = content;
-        this.date = date;
-        this.writer = writer;
-        this.email = email;
-        this.id_num = id_num;
-    }
+public class Tab1Data {
+    private String index, title, txt_content;
+
+    public String getIndex() {  return index; }
+
+    public void setIndex(String index) { this.index = index; }
 
     public String getTitle() {
         return title;
@@ -22,42 +18,10 @@ public class Tab1Data {
     }
 
     public String getContent() {
-        return content;
+        return txt_content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail() {
-        this.email = email;
-    }
-
-    public int getId_num() {
-        return id_num;
-    }
-
-    public void setId_num(int id_num) {
-        this.id_num = id_num;
+    public void setContent(String txt_content) {
+        this.txt_content = txt_content;
     }
 }

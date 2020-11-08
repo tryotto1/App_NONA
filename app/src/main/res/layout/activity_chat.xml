@@ -31,7 +31,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="60dp"
         android:id="@+id/chat_recycle"
         />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="거래 확정"
+        android:id="@+id/btn_buy"/>
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toStartOf="@id/btn_buy"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="빌려주기 성공"
+        android:id="@+id/btn_borrow"/>
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toStartOf="@id/btn_borrow"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="돌려주기 성공"
+        android:id="@+id/btn_give_back"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
