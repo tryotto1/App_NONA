@@ -1,4 +1,4 @@
-package org.techtown.practice.ExtraTabs;
+package org.techtown.practice.SubTab_Tab1;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,10 +19,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.techtown.practice.MainActivity;
 import org.techtown.practice.R;
-import org.techtown.practice.chat_recycler.chatAdapter;
-import org.techtown.practice.chat_recycler.chatData;
+import org.techtown.practice.recycler_Chat.chatAdapter;
+import org.techtown.practice.recycler_Chat.chatData;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,7 +32,6 @@ import java.util.Hashtable;
 public class ChatActivity extends AppCompatActivity {
     // firebase 데이터베이스를 가져온다
     FirebaseDatabase database;
-    private FirebaseAuth mAuth;
 
     // 데이터베이스에서 가져온 ref 를 계속 사용해주기 위해 전역 선언을 한다
     DatabaseReference myRef;
@@ -43,6 +41,10 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     chatAdapter mAdapter;
     ArrayList<chatData> chatArray;
+
+    // 이메일, 아이디
+    String my_email;
+    String my_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,7 @@ public class ChatActivity extends AppCompatActivity {
         Button buy_btn =(Button)findViewById(R.id.btn_buy);
         Button borrow_btn =(Button)findViewById(R.id.btn_borrow);
         Button give_back_btn =(Button)findViewById(R.id.btn_give_back);
+        Button dib_btn =(Button)findViewById(R.id.btn_dib);
 
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
@@ -71,11 +74,29 @@ public class ChatActivity extends AppCompatActivity {
 
         // 현재 내 이메일 가져오기
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        final String my_email = pref.getString("email", "");
+        my_email = pref.getString("email", "");
+
+        int idx_domain = my_email.indexOf("@");
+        my_id = my_email.substring(0, idx_domain);
 
         // 게시물 번호 가져오기
         final String idx_writing = pref.getString("idx_writing", " ");
         Log.d("게시물 번호 >> ", "onCreate: " + idx_writing);
+
+        // 버튼 설정 - 찜 하기
+        dib_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 찜 할 시간 저장
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss aa");
+                String datetime = dateFormat.format(c.getTime());
+
+                // 찜 한 인덱스 값을 firebase에 저장해준다
+                myRef = database.getReference("user").child(my_id).child("my_dib").child(datetime);
+                myRef.setValue(idx_writing);
+            }
+        });
 
         // 버튼 설정 - 구매 확정 하기
         buy_btn.setOnClickListener(new View.OnClickListener() {

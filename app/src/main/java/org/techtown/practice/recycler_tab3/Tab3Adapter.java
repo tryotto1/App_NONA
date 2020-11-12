@@ -1,6 +1,7 @@
-package org.techtown.practice.Like_recycler;
+package org.techtown.practice.recycler_tab3;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,30 +11,29 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.techtown.practice.ExtraTabs.Tab_ShowWrittenActivity;
+import org.techtown.practice.SubTab_Tab1.ShowWrittenActivity;
 import org.techtown.practice.R;
 
 import java.util.ArrayList;
 
-public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.CustomViewHolder> {
+public class Tab3Adapter extends RecyclerView.Adapter<Tab3Adapter.CustomViewHolder> {
 
-    private ArrayList<LikeData> arrayList; // 서버에서 받는 정보
+    private ArrayList<Tab3Data> arrayList; // 서버에서 받는 정보
 
-    public LikeAdapter(ArrayList<LikeData> arrayList) {
+    public Tab3Adapter(ArrayList<Tab3Data> arrayList) {
         this.arrayList = arrayList;
     }
 
     @NonNull
     @Override
-    public LikeAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+    public Tab3Adapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_poem, parent, false);
-        LikeAdapter.CustomViewHolder holder = new LikeAdapter.CustomViewHolder(view);
+        CustomViewHolder holder = new CustomViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final LikeAdapter.CustomViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final Tab3Adapter.CustomViewHolder holder, int position) {
         holder.tv_title.setText(arrayList.get(position).getTitle());
         holder.tv_content.setText(arrayList.get(position).getContent());
         holder.tv_writer.setText(arrayList.get(position).getWriter());
@@ -43,30 +43,30 @@ public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.CustomViewHold
             @Override
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
-                LikeData clicked = arrayList.get(position);
+                Tab3Data clicked = arrayList.get(position);
 
                 String writing = clicked.getContent();
                 String title = clicked.getTitle();
                 String writer = clicked.getWriter();
                 String date = clicked.getDate();
+                String email = clicked.getEmail();
+                int id_poem = clicked.getId_num();
 
-                Intent intent = new Intent(view.getContext(), Tab_ShowWrittenActivity.class);
+                Log.d("로그 값 : ", title + "  " + writer + "  " + writing + "  " + date + "  ");
+
+                Intent intent = new Intent(view.getContext(), ShowWrittenActivity.class);
                 intent.putExtra("writing", writing);
                 intent.putExtra("title", title);
                 intent.putExtra("writer", writer);
                 intent.putExtra("date", date);
-                view.getContext().startActivity(intent);
+                intent.putExtra("email", email);
+                intent.putExtra("id_poem", id_poem);
 
+                view.getContext().startActivity(intent);
+//                Toast.makeText(view.getContext(), "hey", Toast.LENGTH_SHORT).show();
             }
         });
 
-//        holder.layout.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View view) {
-//                remove(holder.getAdapterPosition());
-//                return true;
-//            }
-//        });
     }
 
     @Override
@@ -82,8 +82,6 @@ public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.CustomViewHold
             ex.printStackTrace();
         }
     }
-
-
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 

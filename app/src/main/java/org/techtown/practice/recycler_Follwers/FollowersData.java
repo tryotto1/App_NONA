@@ -1,10 +1,10 @@
-package org.techtown.practice.MyWritings_recycler;
+package org.techtown.practice.recycler_Follwers;
 
-public class MyWritingsData {
+public class FollowersData {
 
     private String title, content, date, writer, id;
 
-    public MyWritingsData(String title, String content, String tag, String date, String writer, String id) {
+    public FollowersData(String title, String content, String date, String writer, String id) {
         this.title = title;
         this.content = content;
         this.date = date;
@@ -52,3 +52,4 @@ public class MyWritingsData {
         this.id = id;
     }
 }
+

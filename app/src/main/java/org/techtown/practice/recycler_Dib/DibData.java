@@ -1,9 +1,26 @@
-package org.techtown.practice.tab1_recycler;
+package org.techtown.practice.recycler_Dib;
 
-import android.util.Log;
+import android.net.Uri;
 
-public class Tab1Data {
+public class DibData {
     private String index, title, txt_content;
+    private Uri uri;
+
+    public void setTxt_content(String txt_content) {
+        this.txt_content = txt_content;
+    }
+
+    public void setUri(Uri uri) {
+        this.uri = uri;
+    }
+
+    public Uri getUri() {
+        return uri;
+    }
+
+    public String getTxt_content() {
+        return txt_content;
+    }
 
     public String getIndex() {  return index; }
 

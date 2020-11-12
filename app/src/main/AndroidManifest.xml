@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.techtown.practice">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,26 +11,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".ExtraTabs.SplashActivity">
+        <activity android:name=".SubTab_Tab1.ProfileActivity"></activity>
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ExtraTabs.LoginActivity"/>
-        <activity android:name=".ExtraTabs.SignupActivity" />
-
-        <activity android:name=".ExtraTabs.sub_FollowingActivity" />
-        <activity android:name=".ExtraTabs.sub_LikeActivity" />
-        <activity android:name=".ExtraTabs.sub_MyWritingsActivity" />
-
-        <activity android:name=".ExtraTabs.Tab_ShowWrittenActivity" />
-        <activity android:name=".ExtraTabs.Tab1_WriteActivity" />
-
-        <activity android:name=".ExtraTabs.ChatActivity" />
-
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".Login_Signin.LoginActivity" />
+        <activity android:name=".Login_Signin.SignupActivity" />
+        <activity android:name=".SubTab_Drawer.FollowingActivity" />
+        <activity android:name=".SubTab_Drawer.DibActivity" />
+        <activity android:name=".SubTab_Drawer.MyWritingsActivity" />
+        <activity android:name=".SubTab_Tab1.ShowWrittenActivity" />
+        <activity android:name=".SubTab_Tab1.WriteActivity" />
+        <activity android:name=".SubTab_Tab1.ChatActivity" />
+        <activity android:name=".MainActivity" />
     </application>
+
 </manifest>

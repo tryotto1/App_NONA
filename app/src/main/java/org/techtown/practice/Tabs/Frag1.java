@@ -1,14 +1,11 @@
 package org.techtown.practice.Tabs;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,33 +13,35 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
-import org.techtown.practice.ExtraTabs.ChatActivity;
-import org.techtown.practice.ExtraTabs.Tab1_WriteActivity;
+import org.techtown.practice.SubTab_Tab1.WriteActivity;
 import org.techtown.practice.R;
 
-import org.techtown.practice.chat_recycler.chatData;
-import org.techtown.practice.tab1_recycler.Tab1Adapter;
-import org.techtown.practice.tab1_recycler.Tab1Data;
+import org.techtown.practice.recycler_tab1.Tab1Adapter;
+import org.techtown.practice.recycler_tab1.Tab1Data;
 
-import java.lang.reflect.Array;
+import java.io.File;
 import java.util.ArrayList;
 
 public class Frag1 extends Fragment {
     private View view;
     private FloatingActionButton btn_write;
 
-    //
-    int tmp_idx = 0;
+    // 사진 Uri 가져오기 위한 firebase
+    StorageReference mStorageRef;
+    StorageReference picture_Ref;
 
-    // 데이터베이스에서 가져온 ref 를 계속 사용해주기 위해 전역 선언을 한다
-    DatabaseReference _;
+    // 사진 관련 경로
+    File localFile;
 
     // firebase 데이터베이스를 가져온다
     FirebaseDatabase database;
@@ -68,6 +67,9 @@ public class Frag1 extends Fragment {
         // firebase 데이터베이스 연결
         database = FirebaseDatabase.getInstance();
 
+        // 사진을 저장하기 위한 레퍼런스 - 업로드
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+
         /*recycler view*/
         recyclerView = view.findViewById(R.id.frag1_recycle);
         linearLayoutManager = new LinearLayoutManager(getContext());
@@ -82,7 +84,7 @@ public class Frag1 extends Fragment {
             @Override
             public void onClick(View view) {
                 // 글 쓰는 activity로 넘겨준다
-                Intent intent = new Intent(getActivity(), Tab1_WriteActivity.class);
+                Intent intent = new Intent(getActivity(), WriteActivity.class);
                 startActivity(intent);
             }
         });
@@ -91,41 +93,49 @@ public class Frag1 extends Fragment {
         ChildEventListener childEventListener_frag1 = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                Tab1Data writing = dataSnapshot.getValue(Tab1Data.class);
+                final Tab1Data writing = dataSnapshot.getValue(Tab1Data.class);
 
-                // 게시물 받아온 걸 넣어준다
-                arrayList.add(writing);
-                tab1Adapter.notifyDataSetChanged();
+                // 쓴 글에 대한 인덱스 값을 가져온다
+                String _idx = writing.getIndex();
+                int idx = Integer.parseInt(_idx);
+
+                // 해당 인덱스에 대응되는 사진 Uri 값을 어답터에 넣어준다 - 다운로드
+                picture_Ref = mStorageRef.child("borrow_device/" + idx);
+                picture_Ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        writing.setUri(uri);
+
+                        // 게시물 받아온 걸 넣어준다
+                        arrayList.add(writing);
+                        tab1Adapter.notifyDataSetChanged();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // 게시물 받아온 걸 넣어준다
+                        arrayList.add(writing);
+                        tab1Adapter.notifyDataSetChanged();
+                    }
+                });
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-                // A comment has changed, use the key to determine if we are displaying this
-                // comment and if so displayed the changed comment.
                 Tab1Data writing = dataSnapshot.getValue(Tab1Data.class);
-                // ...
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                // A comment has changed, use the key to determine if we are displaying this
-                // comment and if so remove it.
                 String commentKey = dataSnapshot.getKey();
-
-                // ...
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
-                // A comment has changed position, use the key to determine if we are
-                // displaying this comment and if so move it.
-
-                // ...
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         };
         database.getReference("writings").addChildEventListener(childEventListener_frag1);

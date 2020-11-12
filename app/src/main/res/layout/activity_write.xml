@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ExtraTabs.Tab1_WriteActivity">
+    tools:context=".SubTab_Tab1.WriteActivity">
 
     <EditText
         android:id="@+id/et_title"

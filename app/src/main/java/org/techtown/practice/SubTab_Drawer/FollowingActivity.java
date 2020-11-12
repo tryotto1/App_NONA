@@ -1,4 +1,4 @@
-package org.techtown.practice.ExtraTabs;
+package org.techtown.practice.SubTab_Drawer;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.techtown.practice.Follwers_recycler.FollowersAdapter;
-import org.techtown.practice.Follwers_recycler.FollowersData;
+import org.techtown.practice.recycler_Follwers.FollowersAdapter;
+import org.techtown.practice.recycler_Follwers.FollowersData;
 import org.techtown.practice.R;
 
 import java.io.BufferedReader;
@@ -30,7 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class sub_FollowingActivity extends AppCompatActivity {
+public class FollowingActivity extends AppCompatActivity {
     private View view;
 
     JSONArray my_follower_jsonArr, follower_name_jsonArr;
@@ -39,13 +39,13 @@ public class sub_FollowingActivity extends AppCompatActivity {
 
     // tab3 recyclerview에서 사용
     private ArrayList<FollowersData> arrayList;
-    private org.techtown.practice.Follwers_recycler.FollowersAdapter FollowersAdapter;
+    private org.techtown.practice.recycler_Follwers.FollowersAdapter FollowersAdapter;
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private ImageView iv_back;
 
-    public static sub_FollowingActivity newInstance() {
-        sub_FollowingActivity fragWednesday = new sub_FollowingActivity();
+    public static FollowingActivity newInstance() {
+        FollowingActivity fragWednesday = new FollowingActivity();
         return fragWednesday;
     }
 
@@ -142,7 +142,7 @@ public class sub_FollowingActivity extends AppCompatActivity {
 
                             arrayList.add(tab3Data);
 
-                            sub_FollowingActivity.this.runOnUiThread(new Runnable() {
+                            FollowingActivity.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     FollowersAdapter.notifyDataSetChanged();

@@ -1,15 +1,17 @@
-package org.techtown.practice.Follwers_recycler;
+package org.techtown.practice.recycler_tab3;
 
-public class FollowersData {
+public class Tab3Data {
 
-    private String title, content, date, writer, id;
+    private String title, content, date, writer, email;
+    private int id_num;
 
-    public FollowersData(String title, String content, String date, String writer, String id) {
+    public Tab3Data(String title, String content, String date, String writer, String email, int id_num) {
         this.title = title;
         this.content = content;
         this.date = date;
         this.writer = writer;
-        this.id = id;
+        this.email = email;
+        this.id_num = id_num;
     }
 
     public String getTitle() {
@@ -44,12 +46,19 @@ public class FollowersData {
         this.writer = writer;
     }
 
-    public String getId() {
-        return id;
+    public String getEmail() {
+        return email;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setEmail() {
+        this.email = email;
+    }
+
+    public int getId_num() {
+        return id_num;
+    }
+
+    public void setId_num(int id_num) {
+        this.id_num = id_num;
     }
 }
-

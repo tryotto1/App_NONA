@@ -1,8 +1,7 @@
-package org.techtown.practice.chat_recycler;
+package org.techtown.practice.recycler_Chat;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.techtown.practice.R;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 

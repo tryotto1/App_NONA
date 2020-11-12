@@ -8,7 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -16,26 +16,25 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
-import org.techtown.practice.ExtraTabs.sub_FollowingActivity;
-import org.techtown.practice.ExtraTabs.sub_LikeActivity;
-import org.techtown.practice.ExtraTabs.LoginActivity;
-import org.techtown.practice.ExtraTabs.sub_MyWritingsActivity;
-import org.techtown.practice.Tabs.Frag2;
-import org.techtown.practice.Tabs.ViewPagerAdapter;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
 
-// 통신을 하기 위함
-import org.json.JSONObject;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import org.techtown.practice.SubTab_Drawer.FollowingActivity;
+import org.techtown.practice.SubTab_Drawer.DibActivity;
+import org.techtown.practice.Login_Signin.LoginActivity;
+import org.techtown.practice.SubTab_Drawer.MyWritingsActivity;
+import org.techtown.practice.SubTab_Tab1.ProfileActivity;
+import org.techtown.practice.Tabs.ViewPagerAdapter;
+import org.techtown.practice.recycler_Dib.DibData;
+import org.techtown.practice.recycler_tab1.Tab1Data;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     //splash에 사용
@@ -51,23 +50,42 @@ public class MainActivity extends AppCompatActivity {
     private View drawerView;
 
     // 현재 내 이메일을 받아오기 위함
-    String writer_email;
+    String my_email, my_id;
+
+    /* Firebase */
+    // 사진 Uri 가져오기 위한 firebase
+    StorageReference mStorageRef;
+    StorageReference picture_Ref;
+
+    // firebase 데이터베이스를 가져온다
+    FirebaseDatabase database;
+
+    // Dib List를 전달하기 위한 리스트
+    ArrayList<String> List_Dib;
+    String str_list_dib = "", str_list_write = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // firebase 데이터베이스 연결
+        database = FirebaseDatabase.getInstance();
+
+        // Dib List 초기화
+        List_Dib = new ArrayList<>();
+
         // 왼쪽 drawer 를 위한 코드
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         drawerView = (View)findViewById(R.id.drawer);
 
-        // 현재 로그인 된 이메일을 가져온다
-        SharedPreferences sharedPreferences = getSharedPreferences("cur_email",MODE_PRIVATE);
-        writer_email = sharedPreferences.getString("cur_email", "여기서도 안 됐음");
+        // 현재 내 이메일 가져오기
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        my_email = pref.getString("email", "");
 
-        // 키워드 관련 시를 가져온다
-//        new keyword_poem_get().execute("http://192.168.0.14:8000/keyword_poem_get/");
+        int idx_domain = my_email.indexOf("@");
+        my_id = my_email.substring(0, idx_domain);
+
 
         // 왼쪽 drawer menu 여는 코드
         ImageButton btn_open = (ImageButton)findViewById(R.id.btn_open);
@@ -81,34 +99,51 @@ public class MainActivity extends AppCompatActivity {
         /* 왼쪽 bar의 각 버튼을 클릭할때마다, 대응되는 activity로 이동한다 */
         LinearLayout my_writing = (LinearLayout) findViewById(R.id.my_writing);
         LinearLayout my_like = (LinearLayout) findViewById(R.id.my_like);
-        LinearLayout my_following = (LinearLayout) findViewById(R.id.my_following);
+        LinearLayout my_profile = (LinearLayout) findViewById(R.id.my_profile);
         LinearLayout exit = (LinearLayout) findViewById(R.id.exit);
 
+        // 내가 쓴 글 목록
         my_writing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), sub_MyWritingsActivity.class);
-                intent.putExtra("writer", writer_email);
+                // 모든 shared preference 저장값들을 삭제한다 - 부정 로그인 방지
+                SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("str_list_write", str_list_write);
+                editor.commit();
+
+                // my write activity로 가기
+                Intent intent = new Intent(getApplicationContext(), MyWritingsActivity.class);
                 startActivity(intent);
             }
         });
 
+        // 내가 대여한 목록
         my_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), sub_LikeActivity.class);
+                // 모든 shared preference 저장값들을 삭제한다 - 부정 로그인 방지
+                SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("str_list_dib", str_list_dib);
+                editor.commit();
+
+                // my dib activity로 가기
+                Intent intent = new Intent(getApplicationContext(), DibActivity.class);
                 startActivity(intent);
             }
         });
 
-        my_following.setOnClickListener(new View.OnClickListener() {
+        // 내 프로필
+        my_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), sub_FollowingActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
             }
         });
 
+        // 로그아웃
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,6 +153,66 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        // firebase에 올라온 글 내용을 실시간으로 업데이트 해주는 listener
+        ChildEventListener childEventListener_Dib_List = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                String dib_idx = dataSnapshot.getValue().toString();
+
+                str_list_dib += (dib_idx+",");
+                Log.d("dib_idx", "onChildAdded: "+str_list_dib);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
+                Tab1Data writing = dataSnapshot.getValue(Tab1Data.class);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                String commentKey = dataSnapshot.getKey();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+        database.getReference("user").child(my_id).child("my_dib").addChildEventListener(childEventListener_Dib_List);
+
+        // firebase에 올라온 글 내용을 실시간으로 업데이트 해주는 listener
+        ChildEventListener childEventListener_Write_List = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                String write_idx = dataSnapshot.getValue().toString();
+
+                str_list_write += (write_idx+",");
+                Log.d("dib_idx", "onChildAdded: " + str_list_write);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
+                Tab1Data writing = dataSnapshot.getValue(Tab1Data.class);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                String commentKey = dataSnapshot.getKey();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+        database.getReference("user").child(my_id).child("my_write").addChildEventListener(childEventListener_Write_List);
 
         /* 왼쪽 drawer에 대한 설정을 해줌 */
         drawerLayout.setDrawerListener(listener);
@@ -137,111 +232,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    /* 키워드에 맞는 시를 하나 가져온다 */
-    public class keyword_poem_get extends AsyncTask<String, String, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-            try {
-                HttpURLConnection con = null;
-                BufferedReader reader = null;
 
-                try {
-                    URL url = new URL(urls[0]);
-
-                    // 연결을 해준다
-                    con = (HttpURLConnection) url.openConnection();
-
-                    // 연결 설정해주기
-                    con.setRequestMethod("POST");
-                    con.setRequestProperty("Cache-Control", "no-cache");
-                    con.setRequestProperty("Content-Type", "application/json");
-                    con.setRequestProperty("Accept", "text/html");
-                    con.setDoOutput(true);
-                    con.setDoInput(true);
-                    con.connect();
-
-                    // 서버로 보낼 스트림 -> 이걸 이용한 버퍼 생성
-                    OutputStream outStream = con.getOutputStream();
-                    BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outStream));
-
-                    writer.write("{}");
-                    writer.flush();
-                    writer.close();
-
-                    // 서버로부터 데이터 받음 -> 이걸 이용한 버퍼 생성
-                    InputStream stream = con.getInputStream();
-                    reader = new BufferedReader(new InputStreamReader(stream));
-
-                    // 결과로 리턴 될 버퍼
-                    StringBuffer buffer = new StringBuffer();
-
-                    // 버퍼 리더로부터 문자열을 받은걸 결과 버퍼에 담는다
-                    String line = "";
-                    while ((line = reader.readLine()) != null) {
-                        buffer.append(line);
-                    }
-
-                    Log.d("받은 내용 main activity >", "doInBackground: " + buffer.toString());
-
-                    JSONObject tmp_json = new JSONObject(buffer.toString());
-
-                    Log.d("json 어레이 ", "doInBackground: >>>>>>>>>" + tmp_json);
-
-                    // 키워드를 가져온다 - 시 + 키워드
-                    String _keyword = tmp_json.getString("keyword");
-                    String _keyword_poem = tmp_json.getString("keyword_poem");
-                    String _keyword_poet = tmp_json.getString("keyword_poet");
-
-                    Log.d("키워드 시 관련 : ",""+_keyword+"  "+_keyword_poem + "  "+_keyword_poet);
-
-                    // 키워드를 저장해준다
-                    SharedPreferences sharedPreferences = getSharedPreferences("keyword",MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("keyword", _keyword);
-                    editor.commit();
-
-                    // 키워드를 저장해준다
-                    SharedPreferences sharedPreferences2 = getSharedPreferences("keyword_poem",MODE_PRIVATE);
-                    SharedPreferences.Editor editor2 = sharedPreferences2.edit();
-                    editor2.putString("keyword_poem", _keyword_poem);
-                    editor2.commit();
-
-                    // 키워드를 저장해준다
-                    SharedPreferences sharedPreferences3 = getSharedPreferences("keyword_poet",MODE_PRIVATE);
-                    SharedPreferences.Editor editor3 = sharedPreferences3.edit();
-                    editor3.putString("keyword_poet", _keyword_poet);
-                    editor3.commit();
-
-                    // 결과 버퍼 내용을 문자열로 바꿔서 리턴한다
-                    return buffer.toString();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally
-                {
-                    if (con != null) {
-                        con.disconnect();
-                    }
-                    try
-                    {
-                        if (reader != null) {
-                            reader.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-        }
-    }
 
     /* 왼쪽 drawer를 열고 닫을 수 있도록 하는 listener
         - 버튼 클릭 이외에도 자연스럽게 열 수 있도록 하기 위함*/

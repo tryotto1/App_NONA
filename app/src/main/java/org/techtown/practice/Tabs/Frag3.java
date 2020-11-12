@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONArray;
-import org.techtown.practice.tab3_recycler.Tab3Adapter;
-import org.techtown.practice.tab3_recycler.Tab3Data;
+import org.techtown.practice.recycler_tab3.Tab3Adapter;
+import org.techtown.practice.recycler_tab3.Tab3Data;
 import org.techtown.practice.R;
 
 //import org.json.JSONArray;

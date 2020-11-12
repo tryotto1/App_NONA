@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ExtraTabs.ChatActivity">
+    tools:context=".SubTab_Tab1.ChatActivity">
 
     <androidx.appcompat.widget.AppCompatEditText
         android:layout_width="0dp"
@@ -58,5 +58,13 @@
         app:layout_constraintTop_toTopOf="parent"
         android:text="돌려주기 성공"
         android:id="@+id/btn_give_back"/>
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toStartOf="@id/btn_give_back"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="찜 하기"
+        android:id="@+id/btn_dib"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

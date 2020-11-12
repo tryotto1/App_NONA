@@ -1,11 +1,9 @@
-package org.techtown.practice.ExtraTabs;
+package org.techtown.practice.Login_Signin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,18 +16,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.techtown.practice.MainActivity;
 import org.techtown.practice.R;
-import org.techtown.practice.chat_recycler.chatData;
 
 import java.util.Hashtable;
-import java.util.Random;
 
 public class SignupActivity extends AppCompatActivity {
     // firebase 데이터베이스를 가져온다
@@ -133,9 +125,7 @@ public class SignupActivity extends AppCompatActivity {
                                         Hashtable<String, String> info
                                                 = new Hashtable<String, String>();
                                         info.put("name", name);
-//                                        info.put("my_write", "내가 쓴 글들 인덱스 목록");
-//                                        info.put("my_buy", "내가 구매한 글들 인덱스 목록");
-//                                        info.put("my_dib", "내가 찜한 글들 인덱스 목록");
+                                        info.put("my_confidence", "0");
 
                                         // user 이메일에서, 앞부분만 떼어 온다 (firebase 규칙때문)
                                         int idx_domain = email.indexOf("@");

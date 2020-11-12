@@ -1,4 +1,4 @@
-package org.techtown.practice.ExtraTabs;
+package org.techtown.practice;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import org.techtown.practice.R;
+import org.techtown.practice.Login_Signin.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
 

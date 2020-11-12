@@ -1,4 +1,4 @@
-package org.techtown.practice.MyWritings_recycler;
+package org.techtown.practice.recycler_Follwers;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -10,51 +10,46 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.techtown.practice.ExtraTabs.Tab_ShowWrittenActivity;
+import org.techtown.practice.SubTab_Drawer.MyWritingsActivity;
 import org.techtown.practice.R;
 
 import java.util.ArrayList;
 
-public class MyWritingsAdapter extends RecyclerView.Adapter<MyWritingsAdapter.CustomViewHolder> {
+public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.CustomViewHolder> {
 
-    private ArrayList<MyWritingsData> arrayList; // 서버에서 받는 정보
+    private ArrayList<FollowersData> arrayList; // 서버에서 받는 정보
 
-    public MyWritingsAdapter(ArrayList<MyWritingsData> arrayList) {
+    public FollowersAdapter(ArrayList<FollowersData> arrayList) {
         this.arrayList = arrayList;
     }
 
     @NonNull
     @Override
-    public MyWritingsAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FollowersAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_poem, parent, false);
-        MyWritingsAdapter.CustomViewHolder holder = new MyWritingsAdapter.CustomViewHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_followers, parent, false);
+        FollowersAdapter.CustomViewHolder holder = new FollowersAdapter.CustomViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MyWritingsAdapter.CustomViewHolder holder, int position) {
-        holder.tv_title.setText(arrayList.get(position).getTitle());
-        holder.tv_content.setText(arrayList.get(position).getContent());
+    public void onBindViewHolder(@NonNull final FollowersAdapter.CustomViewHolder holder, int position) {
         holder.tv_writer.setText(arrayList.get(position).getWriter());
-        holder.tv_date.setText(arrayList.get(position).getDate());
+        holder.tv_email.setText(arrayList.get(position).getId());
+
+
+//        holder.tv_content.setText(arrayList.get(position).getId());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int position = holder.getAdapterPosition();
-                MyWritingsData clicked = arrayList.get(position);
+                FollowersData clicked = arrayList.get(position);
 
-                String writing = clicked.getContent();
-                String title = clicked.getTitle();
-                String writer = clicked.getWriter();
-                String date = clicked.getDate();
+                String writer = clicked.getId();
 
-                Intent intent = new Intent(view.getContext(), Tab_ShowWrittenActivity.class);
-                intent.putExtra("writing", writing);
-                intent.putExtra("title", title);
+                Intent intent = new Intent(view.getContext(), MyWritingsActivity.class);
                 intent.putExtra("writer", writer);
-                intent.putExtra("date", date);
                 view.getContext().startActivity(intent);
             }
         });
@@ -75,7 +70,7 @@ public class MyWritingsAdapter extends RecyclerView.Adapter<MyWritingsAdapter.Cu
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
-        protected TextView tv_title, tv_content, tv_writer, tv_date;
+        protected TextView tv_title, tv_content, tv_writer, tv_date, tv_email;
         protected LinearLayout layout;
 
         public CustomViewHolder(@NonNull View itemView) {
@@ -84,6 +79,7 @@ public class MyWritingsAdapter extends RecyclerView.Adapter<MyWritingsAdapter.Cu
             this.tv_content = (TextView) itemView.findViewById(R.id.tv_content);
             this.tv_writer = (TextView) itemView.findViewById(R.id.tv_writer);
             this.tv_date = (TextView) itemView.findViewById(R.id.tv_date);
+            this.tv_email = (TextView) itemView.findViewById(R.id.tv_email);
         }
     }
 }

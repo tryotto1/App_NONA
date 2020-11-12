@@ -1,4 +1,4 @@
-package org.techtown.practice.chat_recycler;
+package org.techtown.practice.recycler_Chat;
 
 public class chatData {
     String email;

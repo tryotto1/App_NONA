@@ -1,4 +1,4 @@
-package org.techtown.practice.ExtraTabs;
+package org.techtown.practice.SubTab_Tab1;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,19 +10,15 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -30,21 +26,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.json.JSONArray;
 import org.techtown.practice.R;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Hashtable;
 
-public class Tab1_WriteActivity extends AppCompatActivity {
+public class WriteActivity extends AppCompatActivity {
     // 데이터베이스에서 가져온 ref 를 계속 사용해주기 위해 전역 선언을 한다
     DatabaseReference myRef_idx, myRef_write;
     StorageReference mStorageRef;
@@ -88,17 +81,27 @@ public class Tab1_WriteActivity extends AppCompatActivity {
         // 사진을 저장하기 위한 레퍼런스 - 업로드
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
-        // 사진을 가져오기 위한 레퍼런스 - 다운로드
-        picture_Ref = mStorageRef.child("borrow_device/something.jpg");
-
         /* xml 연결 */
         tv_save = findViewById(R.id.tv_save);
         et_title = findViewById(R.id.et_title);
         et_write = findViewById(R.id.et_write);
         iv_back = findViewById(R.id.iv_back);
         tv_ai_poem = findViewById(R.id.tv_ai_poem);
-
         device_img = findViewById(R.id.device_img);
+
+        /* 현재 글의 인덱스 값을 받아온다 */
+        myRef_idx = database.getReference("index").child("current_writing_index");
+        myRef_idx.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                write_index = Integer.parseInt(dataSnapshot.getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         /* 버튼 연결 */
         // 버튼 - 이미지
@@ -114,20 +117,6 @@ public class Tab1_WriteActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
-            }
-        });
-
-        // 현재 인덱스 값을 받아온다
-        myRef_idx = database.getReference("index").child("current_writing_index");
-        myRef_idx.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                write_index = Integer.parseInt(dataSnapshot.getValue().toString());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
 
@@ -167,11 +156,11 @@ public class Tab1_WriteActivity extends AppCompatActivity {
                 int idx_domain = cur_email.indexOf("@");
                 String email_id = cur_email.substring(0, idx_domain);
 
-                myRef_write = database.getReference("user").child(email_id).child("my_write").child("write_index");
+                myRef_write = database.getReference("user").child(email_id).child("my_write").child(datetime);
                 myRef_write.setValue(write_index);
 
                 // 내가 쓴 글을 확인한다
-                Intent intent = new Intent(getApplicationContext(), Tab_ShowWrittenActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ShowWrittenActivity.class);
                 intent.putExtra("title", title);
                 intent.putExtra("writing", writing);
                 intent.putExtra("writer", writer);
@@ -182,39 +171,19 @@ public class Tab1_WriteActivity extends AppCompatActivity {
         });
 
         /* 권한 설정 관련 코드 */
-        if(ContextCompat.checkSelfPermission(Tab1_WriteActivity.this,
+        if(ContextCompat.checkSelfPermission(WriteActivity.this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(Tab1_WriteActivity.this,
+            if(ActivityCompat.shouldShowRequestPermissionRationale(WriteActivity.this,
                     Manifest.permission.READ_EXTERNAL_STORAGE)){
 
             }else{
-                ActivityCompat.requestPermissions(Tab1_WriteActivity.this,
+                ActivityCompat.requestPermissions(WriteActivity.this,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         MY_PERMISSION_REQUEST_READ_CONTACTS);
             }
         }else{
 
-        }
-
-        /* firebase에 있는 사진을 다운로드 해준다 */
-        try {
-            localFile = File.createTempFile("images", "jpg");
-            picture_Ref.getFile(localFile)
-                    .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                            Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                            device_img.setImageBitmap(bitmap);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -238,21 +207,17 @@ public class Tab1_WriteActivity extends AppCompatActivity {
             if(data != null){
                 Uri image = data.getData();
 
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), image);
-                    device_img.setImageBitmap(bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                // glide 사용해서 사진 가져오기
+                Glide.with(this).load(image).into(device_img);
 
                 /* 사진을 업로드하기 */
-//            Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
+                // 사진을 가져오기 위한 레퍼런스 - 다운로드
+
+                picture_Ref = mStorageRef.child("borrow_device/" + write_index);
                 picture_Ref.putFile(image)
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                // Get a URL to the uploaded content
-//                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
 
                             }
                         })
