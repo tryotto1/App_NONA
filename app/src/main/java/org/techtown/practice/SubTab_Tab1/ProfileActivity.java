@@ -18,6 +18,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -28,8 +33,8 @@ public class ProfileActivity extends AppCompatActivity {
     // 이메일, 아이디
     String my_email, my_id;
 
-    // 판매목록, 구매목록
-    String str_list_write, str_list_dib;
+    // 판매목록, 구매목록, 신뢰도
+    String str_list_write, str_list_dib, str_confidence;
 
     // xml 연결할 것들
     ImageView img_profile;
@@ -75,9 +80,12 @@ public class ProfileActivity extends AppCompatActivity {
         String[] arr_my_dib = str_list_dib.split(",");
         int num_dib = arr_my_dib.length;
 
+        /* firebase에서 신뢰도 값 가져오기 */
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("user").child(my_id).child("my_confidence");
+
         /* xml 값 채워주기 */
         usr_email.setText("아이디 : " + my_id);
-        usr_confidnce.setText("신뢰도 : " + usr_confidnce);
         usr_num_write.setText("빌려준 횟수" + num_write);
         usr_num_dib.setText("빌린 횟수 : " + num_dib);
 
@@ -104,6 +112,24 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.d("no image >> ", "onFailure: 이미지가 업로드 안 됨");
+            }
+        });
+
+        // 신뢰도 값을 가져오기 위함
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() != null)
+                    str_confidence = dataSnapshot.getValue().toString();
+                else
+                    str_confidence = "0";
+
+                // 신뢰도 값 채워주기
+                usr_confidnce.setText("신뢰도 : " + str_confidence);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
             }
         });
     }

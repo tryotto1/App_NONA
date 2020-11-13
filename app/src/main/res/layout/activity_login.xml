@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
         android:fontFamily="@font/neat_font"
-        android:text="공구공구"
+        android:text="노나"
         android:textColor="#99000000"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,7 +25,9 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.204" />
+        app:layout_constraintVertical_bias="0.204"
+        android:textStyle="bold"
+        />
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:layout_width="60dp"
@@ -75,10 +77,11 @@
         android:text="로그인"
         android:textColor="#000000"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_signup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_password" />
+        app:layout_constraintTop_toBottomOf="@+id/et_password"
+        android:layout_marginTop="70dp"
+        />
 
     <TextView
         android:id="@+id/tv_signup"
@@ -86,6 +89,18 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/neat_font"
         android:text="처음이신가요?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_login"
+        android:layout_marginTop="70dp"
+        android:background="#DFC6C6" />
+
+    <TextView
+        android:id="@+id/lost_pwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/neat_font"
+        android:text="비밀번호를 잊어버리셨나요?"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

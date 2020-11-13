@@ -55,22 +55,9 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.chat_recycle);
         final EditText chat_msg = (EditText)findViewById(R.id.chat_msg);
         Button chat_btn =(Button)findViewById(R.id.btn_chat);
-        Button buy_btn =(Button)findViewById(R.id.btn_buy);
         Button borrow_btn =(Button)findViewById(R.id.btn_borrow);
         Button give_back_btn =(Button)findViewById(R.id.btn_give_back);
         Button dib_btn =(Button)findViewById(R.id.btn_dib);
-
-        // use a linear layout manager
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        // firebase 데이터베이스 연결
-        database = FirebaseDatabase.getInstance();
-
-        // 리사이클러 뷰를 위함
-        chatArray = new ArrayList<>();
-        mAdapter = new chatAdapter(chatArray, getApplicationContext());
-        recyclerView.setAdapter(mAdapter);
 
         // 현재 내 이메일 가져오기
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
@@ -81,7 +68,46 @@ public class ChatActivity extends AppCompatActivity {
 
         // 게시물 번호 가져오기
         final String idx_writing = pref.getString("idx_writing", " ");
-        Log.d("게시물 번호 >> ", "onCreate: " + idx_writing);
+
+        // 작성자 아이디 가져오기
+        final String writer = pref.getString("writer", " ");
+
+        Log.d("writer -->", "onCreate: " + writer);
+        Log.d("my_idx -->", "onCreate: " + my_id);
+
+
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        // firebase 데이터베이스 연결
+        database = FirebaseDatabase.getInstance();
+
+        // 리사이클러 뷰를 위함
+        chatArray = new ArrayList<>();
+        mAdapter = new chatAdapter(chatArray, getApplicationContext(), writer);
+        recyclerView.setAdapter(mAdapter);
+
+        /* 작성자가 채팅방에 들어갔을 경우와 들어가지 않았을 경우 나누기 */
+        if(my_id.equals(writer)){
+            Log.d(">>>", "onCreate: " + "내가 쓴 게 맞음");
+            // (구매 확정된 상황에서) 물건을 돌려받았는가?
+            give_back_btn.setVisibility(View.VISIBLE);
+
+            /* 구매 확정이 되지 않은 상황 (아직 매물이 있음) */
+            borrow_btn.setVisibility(View.INVISIBLE);
+            dib_btn.setVisibility(View.INVISIBLE);
+        }else{
+            Log.d(">>>", "onCreate: " + "내가 쓴 게 아님");
+            // 구매 확정이 되지 않은 상황 (아직 매물이 있음) - 구매확정을 할건가?
+            dib_btn.setVisibility(View.VISIBLE);
+
+            // 구매 확정이 된 상황
+            give_back_btn.setVisibility(View.INVISIBLE);
+
+            // 구매 확정이 된 상황 - 물건을 빌려받았는가?
+            borrow_btn.setVisibility(View.VISIBLE);
+        }
 
         // 버튼 설정 - 찜 하기
         dib_btn.setOnClickListener(new View.OnClickListener() {
@@ -95,13 +121,7 @@ public class ChatActivity extends AppCompatActivity {
                 // 찜 한 인덱스 값을 firebase에 저장해준다
                 myRef = database.getReference("user").child(my_id).child("my_dib").child(datetime);
                 myRef.setValue(idx_writing);
-            }
-        });
 
-        // 버튼 설정 - 구매 확정 하기
-        buy_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 // firebase 데이터베이스에서, "writing" 관련된 ref 를 가져온다
                 myRef = database.getReference("writing").child(""+idx_writing).child("flag_buy");
                 myRef.setValue("yes");
@@ -127,7 +147,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // firebase 데이터베이스에서, "writing" 관련된 ref 를 가져온다
-                myRef = database.getReference("writing").child(""+idx_writing).child("flag_give_back");
+                myRef = database.getReference("writing").child("" + idx_writing).child("flag_give_back");
                 myRef.setValue("yes");
             }
         });
@@ -175,27 +195,15 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-                // A comment has changed, use the key to determine if we are displaying this
-                // comment and if so displayed the changed comment.
-                chatData chat = dataSnapshot.getValue(chatData.class);
-                // ...
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                // A comment has changed, use the key to determine if we are displaying this
-                // comment and if so remove it.
-                String commentKey = dataSnapshot.getKey();
 
-                // ...
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
-                // A comment has changed position, use the key to determine if we are
-                // displaying this comment and if so move it.
-
-                // ...
             }
 
             @Override

@@ -48,6 +48,19 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.CustomViewHold
         holder.tv_content.setText(arrayList.get(position).getContent());
         Glide.with(context).load(arrayList.get(position).getUri()).into(holder.device_img);
 
+        /* 대여 가능한지 여부를 표시함 */
+        if(arrayList.get(position).getFlag_borrow().equals("no")){
+            holder.borrow_possible.setVisibility(View.VISIBLE);
+        }else{
+            holder.borrow_possible.setVisibility(View.INVISIBLE);
+        }
+
+        if(arrayList.get(position).getFlag_borrow().equals("yes")){
+            holder.borrow_impossible.setVisibility(View.VISIBLE);
+        }else{
+            holder.borrow_impossible.setVisibility(View.INVISIBLE);
+        }
+
         // 각 게시물을 클릭할 경우, 채팅을 시작한다
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +69,7 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.CustomViewHold
                 SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("idx_writing", arrayList.get(position).getIndex());
+                editor.putString("writer", arrayList.get(position).getWriter());
                 editor.commit();
 
                 // 채팅을 시작한다
@@ -81,7 +95,7 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.CustomViewHold
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        protected TextView tv_title, tv_content;
+        protected TextView tv_title, tv_content, borrow_possible, borrow_impossible;
         protected LinearLayout layout;
         protected ImageView device_img;
 
@@ -90,6 +104,8 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.CustomViewHold
             this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
             this.tv_content = (TextView) itemView.findViewById(R.id.tv_content);
             this.device_img = (ImageView) itemView.findViewById(R.id.device_img_frag1);
+            this.borrow_impossible = (TextView)itemView.findViewById(R.id.borrow_impossible);
+            this.borrow_possible = (TextView)itemView.findViewById(R.id.borrow_possible);
         }
     }
 }

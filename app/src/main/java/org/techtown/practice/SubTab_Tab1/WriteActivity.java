@@ -53,13 +53,11 @@ public class WriteActivity extends AppCompatActivity {
     TextView tv_save, tv_ai_poem;
     EditText et_write, et_title;
     private ImageView iv_back;
-    ImageView device_img;
-
-    // 사진 관련 경로
-    File localFile;
+    private ImageView device_img;
 
     // 객체로부터 입력 받은 string 값
     String txt_content, title, writer;
+    String email_id;
 
     // intent 관련 코드 번호 받기위해
     int BTN_IMAGE_CODE = 1001;
@@ -77,6 +75,9 @@ public class WriteActivity extends AppCompatActivity {
         // 내 이메일 가져오기
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         final String cur_email = pref.getString("email", "");
+
+        int idx_domain = cur_email.indexOf("@");
+        email_id = cur_email.substring(0, idx_domain);
 
         // 사진을 저장하기 위한 레퍼런스 - 업로드
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -142,6 +143,7 @@ public class WriteActivity extends AppCompatActivity {
                 writing.put("flag_buy", "no");
                 writing.put("flag_borrow", "no");
                 writing.put("flag_give_back", "no");
+                writing.put("writer", email_id);
 
                 /* 쓴 글을 데이터베이스에 기록해준다 */
                 // 글 자체를 저장해준다
@@ -153,9 +155,6 @@ public class WriteActivity extends AppCompatActivity {
                 myRef_write.setValue(write_index + 1);
 
                 // 유저 테이블에 내가 쓴 글 인덱스를 기록해둔다
-                int idx_domain = cur_email.indexOf("@");
-                String email_id = cur_email.substring(0, idx_domain);
-
                 myRef_write = database.getReference("user").child(email_id).child("my_write").child(datetime);
                 myRef_write.setValue(write_index);
 

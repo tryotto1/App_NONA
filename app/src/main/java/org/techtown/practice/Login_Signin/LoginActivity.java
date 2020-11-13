@@ -3,6 +3,7 @@ package org.techtown.practice.Login_Signin;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -22,7 +23,7 @@ import org.techtown.practice.R;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText et_email, et_password;
-    private TextView tv_login, tv_signup;
+    private TextView tv_login, tv_signup, lost_pwd;
     ProgressBar progressBar;
 
     // 로그인용 firebase
@@ -51,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         tv_login = findViewById(R.id.tv_login);
         tv_signup = findViewById(R.id.tv_signup);
         progressBar = findViewById(R.id.progress);
+        lost_pwd = findViewById(R.id.lost_pwd);
 
         // 로그인 버튼
         tv_login.setOnClickListener(new View.OnClickListener() {
@@ -109,6 +111,26 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), SignupActivity.class);
                 view.getContext().startActivity(intent);
+            }
+        });
+
+        // 비밀번호 분실 버튼
+        lost_pwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth.sendPasswordResetEmail(et_email.getText().toString())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+                                    Toast.makeText(LoginActivity.this, "해당 이메일 주소로 메일을 보냈습니다",
+                                            Toast.LENGTH_LONG).show();
+                                }else{
+                                    Toast.makeText(LoginActivity.this, "해당 이메일 주소는 가입되지 않은 주소입니다",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
             }
         });
     }

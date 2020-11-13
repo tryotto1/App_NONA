@@ -3,8 +3,40 @@ package org.techtown.practice.recycler_tab1;
 import android.net.Uri;
 
 public class Tab1Data {
-    private String index, title, txt_content;
+    private String index, title, txt_content, flag_borrow, flag_buy, flag_give_back, writer;
     private Uri uri;
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setFlag_borrow(String flag_borrow) {
+        this.flag_borrow = flag_borrow;
+    }
+
+    public void setFlag_buy(String flag_buy) {
+        this.flag_buy = flag_buy;
+    }
+
+    public void setFlag_give_back(String flag_give_back) {
+        this.flag_give_back = flag_give_back;
+    }
+
+    public String getFlag_borrow() {
+        return flag_borrow;
+    }
+
+    public String getFlag_buy() {
+        return flag_buy;
+    }
+
+    public String getFlag_give_back() {
+        return flag_give_back;
+    }
 
     public void setTxt_content(String txt_content) {
         this.txt_content = txt_content;

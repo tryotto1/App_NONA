@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/graywhite">
 
     <LinearLayout
@@ -9,6 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/item_border"
@@ -62,7 +66,35 @@
             android:text="2020년 08월 01일, 밤"
             android:textColor="#C8C8C8"
             android:textSize="14sp" />
-
     </LinearLayout>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/borrow_impossible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/layout"
+        app:layout_constraintEnd_toEndOf="@+id/layout"
+        android:background="#DFC6C6"
+        android:fontFamily="@font/neat_font"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:text="대여 중"
+        android:textSize="20dp"
+        android:visibility="invisible"
+        />
+
+    <TextView
+        android:id="@+id/borrow_possible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/layout"
+        app:layout_constraintEnd_toEndOf="@+id/layout"
+        android:background="#DFC6C6"
+        android:fontFamily="@font/neat_font"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:text="대여 가능"
+        android:textSize="20dp"
+        android:visibility="invisible"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

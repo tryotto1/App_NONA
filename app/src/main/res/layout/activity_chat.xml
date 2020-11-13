@@ -40,15 +40,7 @@
         android:layout_height="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="거래 확정"
-        android:id="@+id/btn_buy"/>
-
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        app:layout_constraintEnd_toStartOf="@id/btn_buy"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="빌려주기 성공"
+        android:text="빌려받음"
         android:id="@+id/btn_borrow"/>
 
     <Button
@@ -56,7 +48,7 @@
         android:layout_height="50dp"
         app:layout_constraintEnd_toStartOf="@id/btn_borrow"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="돌려주기 성공"
+        android:text="돌려받음"
         android:id="@+id/btn_give_back"/>
 
     <Button
@@ -64,7 +56,7 @@
         android:layout_height="50dp"
         app:layout_constraintEnd_toStartOf="@id/btn_give_back"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="찜 하기"
+        android:text="거래 신청"
         android:id="@+id/btn_dib"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
