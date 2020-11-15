@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +29,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import org.techtown.practice.R;
+import org.techtown.practice.SubTab_Drawer.DibActivity;
+import org.techtown.practice.SubTab_Drawer.MyWritingsActivity;
 
 public class ProfileActivity extends AppCompatActivity {
     // 이메일, 아이디
@@ -39,6 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
     // xml 연결할 것들
     ImageView img_profile;
     TextView usr_email, usr_num_write, usr_num_dib, usr_confidnce;
+    Button btn_write, btn_dib, btn_chat;
 
     // 사진 Uri 가져오기 위한 firebase
     StorageReference mStorageRef;
@@ -61,6 +65,9 @@ public class ProfileActivity extends AppCompatActivity {
         usr_confidnce = (TextView)findViewById(R.id.usr_confidence);
         usr_num_write = (TextView)findViewById(R.id.usr_num_write);
         usr_num_dib = (TextView)findViewById(R.id.usr_num_dib);
+        btn_chat = (Button)findViewById(R.id.btn_profile_chat);
+        btn_dib = (Button)findViewById(R.id.btn_profile_dib);
+        btn_write = (Button)findViewById(R.id.btn_profile_my_writing);
 
         /* shared preference */
         // 현재 내 이메일 가져오기
@@ -88,6 +95,48 @@ public class ProfileActivity extends AppCompatActivity {
         usr_email.setText("아이디 : " + my_id);
         usr_num_write.setText("빌려준 횟수" + num_write);
         usr_num_dib.setText("빌린 횟수 : " + num_dib);
+
+        /* 버튼 설정해주기 */
+        // 내가 쓴 글
+        btn_write.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 모든 shared preference 저장값들을 삭제한다 - 부정 로그인 방지
+                SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("str_list_write", str_list_write);
+                editor.commit();
+
+                // my write activity로 가기
+                Intent intent = new Intent(getApplicationContext(), MyWritingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // 내가 대여한 글
+        btn_dib.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 모든 shared preference 저장값들을 삭제한다 - 부정 로그인 방지
+                SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("str_list_dib", str_list_dib);
+                editor.commit();
+
+                // my dib activity로 가기
+                Intent intent = new Intent(getApplicationContext(), DibActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // 내가 채팅하고 있는 글
+        btn_chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 아직 구현 못함
+            }
+        });
+
 
         /* 프로필 사진 새로 업로드 하기 */
         img_profile.setOnClickListener(new View.OnClickListener() {

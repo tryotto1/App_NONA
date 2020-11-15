@@ -2,63 +2,118 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/graywhite">
+    android:background="#455AE8">
 
-    <LinearLayout
-        android:id="@+id/layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="7dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <TextView
+        android:layout_width="270dp"
+        android:layout_height="40dp"
+        android:background="@drawable/form_search"
+        android:id="@+id/search_frag1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.43">
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="40dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="30dp"
+        android:hint="검색어를 입력하세요"
+        />
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/heart"
+        app:layout_constraintTop_toTopOf="@id/search_frag1"
+        app:layout_constraintEnd_toEndOf="@id/search_frag1"
+        app:layout_constraintBottom_toBottomOf="@id/search_frag1"
+        android:layout_marginRight="15dp"
+        />
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/img_profile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintStart_toEndOf="@id/search_frag1"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/followed"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="대여 소식"
+        android:fontFamily="@font/apple_sd_gothic_neo_b"
+        android:textColor="#ABABAB"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/frag1_bottom"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="50dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/txt_borrow"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="나눔 소식"
+        android:fontFamily="@font/apple_sd_gothic_neo_b"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/frag1_bottom"
+        app:layout_constraintStart_toEndOf="@+id/txt_borrow"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="550dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/frag1_bottom"
+        android:background="@drawable/bg_frag1_bottom"
+        >
 
         <TextView
-            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/neat_font"
-            android:text="채우다"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:fontFamily="@font/apple_sd_gothic_neo_b"
+            android:text="게시글"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="35dp"
+            android:layout_marginLeft="35dp"
+            android:textSize="20dp"
+            android:id="@+id/txt_top_recy"/>
 
-        <TextView
-            android:id="@+id/tv_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/neat_font"
-            android:text="하나이면\n 둘을 원하고 \n\n 둘이면\n 셋을 원하네"
-            android:textColor="#787878"
-            android:textSize="14sp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_top_recy"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:id="@+id/frag1_recycle"
+            />
 
-        <TextView
-            android:id="@+id/tv_writer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/neat_font"
-            android:gravity="center"
-            android:text="[호루라기]"
-            android:textColor="#C8C8C8"
-            android:textSize="12sp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/neat_font"
-            android:gravity="center"
-            android:textColor="#C8C8C8"
-            android:textSize="12sp" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_write"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="#FFFFFF"
+        android:src="@drawable/writing"
+        app:backgroundTint="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/frag1_bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="10dp"
+        />
 
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

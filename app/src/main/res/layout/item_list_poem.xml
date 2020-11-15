@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/graywhite">
+    android:background="#FFFFFF">
 
     <LinearLayout
         android:id="@+id/layout"
@@ -15,8 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/item_border"
-        android:gravity="center"
+        android:background="@drawable/form_one_writing"
         android:orientation="vertical"
         >
 
@@ -24,48 +23,49 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/neat_font"
-            android:text="채우다"
-            android:textColor="#000000"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:fontFamily="@font/apple_sd_gothic_neo_b"
+            android:text="게시글 제목"
+            android:textColor="#7F7F7F"
+            android:textSize="20dp"
+            />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:id="@+id/device_img_frag1"/>
-
-        <TextView
-            android:id="@+id/tv_content"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/neat_font"
-            android:text="하나이면\n 둘을 원하고 \n\n 둘이면\n 셋을 원하네"
-            android:textColor="#787878"
-            android:textSize="18sp" />
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            >
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/device_img_frag1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginLeft="15dp"
+                />
 
-        <TextView
-            android:id="@+id/tv_writer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/neat_font"
-            android:gravity="center"
-            android:text="[호루라기]"
-            android:textColor="#C8C8C8"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/apple_sd_gothic_neo_b"
+                android:text="게시글 내용"
+                android:textColor="#787878"
+                android:textSize="15sp"
+                android:layout_marginBottom="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/neat_font"
-            android:gravity="center"
-            android:text="2020년 08월 01일, 밤"
-            android:textColor="#C8C8C8"
-            android:textSize="14sp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
     </LinearLayout>
 
     <TextView

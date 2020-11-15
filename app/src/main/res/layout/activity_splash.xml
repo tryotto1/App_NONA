@@ -4,17 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SplashActivity">
+    tools:context=".SplashActivity"
+    android:background="#455AE8">
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
-        android:fontFamily="@font/neat_font"
-        android:text="공구공구"
-        android:textColor="#99000000"
-        android:textSize="36sp"
+        android:fontFamily="@font/apple_sd_gothic_neo_h"
+        android:text="NONA"
+        android:textColor="#FFFFFF"
+        android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"

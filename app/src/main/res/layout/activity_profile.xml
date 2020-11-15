@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SubTab_Tab1.ProfileActivity">
+    tools:context=".SubTab_Tab1.ProfileActivity"
+    android:background="#EFF0F3"
+    >
 
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/img_profile"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        app:civ_border_width="5dp"
-        app:civ_border_color="#dfdfdf"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,26 +29,169 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/usr_email"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="5dp"
         android:textStyle="bold"
         android:gravity="center"
-        android:fontFamily="@font/neat_font"
+        android:fontFamily="@font/apple_sd_gothic_neo_b"
+        android:text="김상윤"
         />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:fontFamily="@font/apple_sd_gothic_neo_b"
+        android:text="프로필 수정"
+        android:background="@drawable/btn_login"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@+id/usr_email"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/btn_re_profile"/>
+
+    <Button
+        android:layout_width="350dp"
+        android:layout_height="60dp"
+        android:id="@+id/btn_profile_my_writing"
+        android:background="@drawable/form_login_signin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_re_profile"
+        android:layout_marginTop="30dp"
+        />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintStart_toStartOf="@id/btn_profile_my_writing"
+        app:layout_constraintTop_toTopOf="@id/btn_profile_my_writing"
+        app:layout_constraintBottom_toBottomOf="@id/btn_profile_my_writing"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/my_writing_icon"
+        android:src="@drawable/writing"
+        android:elevation="5dp"
+        />
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/apple_sd_gothic_neo_b"
+        android:text="내가 쓴 글"
+        app:layout_constraintStart_toEndOf="@id/my_writing_icon"
+        app:layout_constraintTop_toTopOf="@id/btn_profile_my_writing"
+        android:elevation="5dp"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@id/btn_profile_my_writing"
+        android:layout_marginLeft="40dp"
+        />
+
+    <Button
+        android:layout_width="350dp"
+        android:layout_height="60dp"
+        android:id="@+id/btn_profile_chat"
+        android:background="@drawable/form_login_signin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_profile_my_writing"
+        android:layout_marginTop="5dp"
+        />
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintStart_toStartOf="@id/btn_profile_chat"
+        app:layout_constraintTop_toTopOf="@id/btn_profile_chat"
+        app:layout_constraintBottom_toBottomOf="@id/btn_profile_chat"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/my_chat_icon"
+        android:src="@drawable/group"
+        android:elevation="5dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/apple_sd_gothic_neo_b"
+        android:text="내 쪽지함"
+        app:layout_constraintStart_toEndOf="@id/my_chat_icon"
+        app:layout_constraintTop_toTopOf="@id/btn_profile_chat"
+        android:elevation="5dp"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@id/btn_profile_chat"
+        android:layout_marginLeft="40dp"
+        />
+
+    <Button
+        android:layout_width="350dp"
+        android:layout_height="60dp"
+        android:id="@+id/btn_profile_dib"
+        android:background="@drawable/form_login_signin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_profile_chat"
+        android:layout_marginTop="5dp"
+        />
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintStart_toStartOf="@id/btn_profile_dib"
+        app:layout_constraintTop_toTopOf="@id/btn_profile_dib"
+        app:layout_constraintBottom_toBottomOf="@id/btn_profile_dib"
+        android:layout_marginLeft="20dp"
+        android:id="@+id/my_dib_icon"
+        android:src="@drawable/heart"
+        android:elevation="5dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/apple_sd_gothic_neo_b"
+        android:text="스크랩한 게시물"
+        app:layout_constraintStart_toEndOf="@id/my_dib_icon"
+        app:layout_constraintTop_toTopOf="@id/btn_profile_dib"
+        android:elevation="5dp"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@id/btn_profile_dib"
+        android:layout_marginLeft="40dp"
+        />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/logout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="30dp"
+        android:id="@+id/icon_logout"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/apple_sd_gothic_neo_b"
+        android:text="로그아웃"
+        app:layout_constraintStart_toEndOf="@id/icon_logout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="30dp"
+        android:textSize="18dp"
+        android:layout_marginLeft="20dp"/>
+
+
+    <TextView
+        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:id="@+id/usr_confidence"
-        app:layout_constraintTop_toBottomOf="@id/usr_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="10dp"
         android:textStyle="bold"
         android:gravity="center"
-        android:fontFamily="@font/neat_font"
+        android:fontFamily="@font/apple_sd_gothic_neo_b"
+        android:text="123123"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
 
     <TextView
+        android:visibility="invisible"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -57,11 +200,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/usr_num_write"
-        android:fontFamily="@font/neat_font"
+        android:fontFamily="@font/apple_sd_gothic_neo_b"
         android:gravity="center"
+        android:text="123123"
         />
 
     <TextView
+        android:visibility="invisible"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -70,8 +215,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/usr_num_dib"
-        android:fontFamily="@font/neat_font"
+        android:fontFamily="@font/apple_sd_gothic_neo_b"
         android:gravity="center"
+        android:text="123123"
         />
 
     <ImageView
@@ -90,7 +236,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
-        android:fontFamily="@font/neat_font"
+        android:fontFamily="@font/apple_sd_gothic_neo_b"
         android:text="내 프로필"
         android:textSize="18sp"
         android:textStyle="bold"

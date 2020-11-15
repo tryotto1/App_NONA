@@ -87,7 +87,6 @@ public class WriteActivity extends AppCompatActivity {
         et_title = findViewById(R.id.et_title);
         et_write = findViewById(R.id.et_write);
         iv_back = findViewById(R.id.iv_back);
-        tv_ai_poem = findViewById(R.id.tv_ai_poem);
         device_img = findViewById(R.id.device_img);
 
         /* 현재 글의 인덱스 값을 받아온다 */

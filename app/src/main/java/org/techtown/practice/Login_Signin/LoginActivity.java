@@ -3,10 +3,9 @@ package org.techtown.practice.Login_Signin;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,8 +22,8 @@ import org.techtown.practice.R;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText et_email, et_password;
-    private TextView tv_login, tv_signup, lost_pwd;
-    ProgressBar progressBar;
+    private TextView tv_signup, lost_pwd;
+    private Button btn_login;
 
     // 로그인용 firebase
     private FirebaseAuth mAuth;
@@ -49,28 +48,22 @@ public class LoginActivity extends AppCompatActivity {
         // xml 연결
         et_email = findViewById(R.id.et_email);
         et_password = findViewById(R.id.et_password);
-        tv_login = findViewById(R.id.tv_login);
+        btn_login = findViewById(R.id.btn_login);
         tv_signup = findViewById(R.id.tv_signup);
-        progressBar = findViewById(R.id.progress);
         lost_pwd = findViewById(R.id.lost_pwd);
 
         // 로그인 버튼
-        tv_login.setOnClickListener(new View.OnClickListener() {
+        btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 email = et_email.getText().toString();
                 password = et_password.getText().toString();
-
-                // progress bar 가 보이도록 한다
-                progressBar.setVisibility(View.VISIBLE);
 
                 // 로그인 시도를 한다
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                // progress bar 가 사라지게 한다
-                                progressBar.setVisibility(View.GONE);
 
                                 if (task.isSuccessful()) {
 

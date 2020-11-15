@@ -14,20 +14,12 @@
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="wrap_content"
             android:background="@color/graywhite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:gravity="center_vertical">
-
-            <ImageButton
-                android:id="@+id/btn_open"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="15dp"
-                android:background="@color/graywhite"
-                android:src="@drawable/menu" />
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"
@@ -52,26 +44,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </com.google.android.material.tabs.TabLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                >
-
-                <TextView
-                    android:id="@+id/tv_tab"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginRight="20dp"
-                    android:fontFamily="@font/neat_font"
-                    android:text="글감"
-                    android:textSize="18sp"
-                    android:gravity="right"/>
-
-            </LinearLayout>
-
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -83,6 +55,16 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+            <ImageButton
+                android:id="@+id/btn_open"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@color/graywhite"
+                android:src="@drawable/menu" />
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewPager"

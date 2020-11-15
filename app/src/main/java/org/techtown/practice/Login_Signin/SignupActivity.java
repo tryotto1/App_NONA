@@ -37,7 +37,6 @@ public class SignupActivity extends AppCompatActivity {
     private EditText user_email, user_password, user_name;
     private TextView tv_signup;
     private Button btn_email_verify, btn_pwd_check, btn_name_check;
-    ProgressBar progressBar;
 
     // 입력 받은 string 값을 담기 위한 변수
     String email, password, name;
@@ -65,7 +64,6 @@ public class SignupActivity extends AppCompatActivity {
         btn_email_verify = findViewById(R.id.btn_email_verify);
         btn_pwd_check = findViewById(R.id.btn_pwd_check);
         btn_name_check = findViewById(R.id.btn_name_check);
-        progressBar = findViewById(R.id.progress);
 
         // kupid 이메일인지 확인한다
         flag_email = Boolean.TRUE;
