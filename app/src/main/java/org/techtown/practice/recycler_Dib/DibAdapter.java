@@ -44,8 +44,6 @@ public class DibAdapter extends RecyclerView.Adapter<DibAdapter.CustomViewHolder
     @Override
     public void onBindViewHolder(@NonNull final DibAdapter.CustomViewHolder holder, final int position) {
         holder.tv_title.setText(arrayList.get(position).getTitle());
-        holder.tv_content.setText(arrayList.get(position).getContent());
-        Glide.with(context).load(arrayList.get(position).getUri()).into(holder.device_img);
 
         // 각 게시물을 클릭할 경우, 채팅을 시작한다
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -86,8 +84,6 @@ public class DibAdapter extends RecyclerView.Adapter<DibAdapter.CustomViewHolder
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
-            this.tv_content = (TextView) itemView.findViewById(R.id.tv_content);
-            this.device_img = (ImageView) itemView.findViewById(R.id.device_img_frag1);
         }
     }
 }

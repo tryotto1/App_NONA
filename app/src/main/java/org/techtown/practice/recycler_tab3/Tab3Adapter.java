@@ -35,9 +35,6 @@ public class Tab3Adapter extends RecyclerView.Adapter<Tab3Adapter.CustomViewHold
     @Override
     public void onBindViewHolder(@NonNull final Tab3Adapter.CustomViewHolder holder, int position) {
         holder.tv_title.setText(arrayList.get(position).getTitle());
-        holder.tv_content.setText(arrayList.get(position).getContent());
-        holder.tv_writer.setText(arrayList.get(position).getWriter());
-        holder.tv_date.setText(arrayList.get(position).getDate());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,9 +88,7 @@ public class Tab3Adapter extends RecyclerView.Adapter<Tab3Adapter.CustomViewHold
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
-            this.tv_content = (TextView) itemView.findViewById(R.id.tv_content);
             this.tv_writer = (TextView) itemView.findViewById(R.id.tv_writer);
-            this.tv_date = (TextView) itemView.findViewById(R.id.tv_date);
         }
     }
 }

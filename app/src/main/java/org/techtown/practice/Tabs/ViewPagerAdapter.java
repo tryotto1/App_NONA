@@ -20,8 +20,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
                 return Frag1.newInstance();
             case 1:
                 return Frag2.newInstance();
-            case 2:
-                return Frag3.newInstance();
             default:
                 return null;
         }
@@ -29,7 +27,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 3;
+        return 2;
     }
 
     @Nullable
@@ -39,8 +37,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return "";
             case 1:
-                return "";
-            case 2:
                 return "";
             default:
                 return null;

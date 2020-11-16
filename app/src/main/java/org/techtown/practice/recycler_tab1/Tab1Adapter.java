@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 
 import org.techtown.practice.SubTab_Tab1.ChatActivity;
 import org.techtown.practice.R;
+import org.techtown.practice.SubTab_Tab1.ShowWrittenActivity;
 
 import java.util.ArrayList;
 
@@ -45,21 +46,6 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.CustomViewHold
     @Override
     public void onBindViewHolder(@NonNull final Tab1Adapter.CustomViewHolder holder, final int position) {
         holder.tv_title.setText(arrayList.get(position).getTitle());
-        holder.tv_content.setText(arrayList.get(position).getContent());
-        Glide.with(context).load(arrayList.get(position).getUri()).into(holder.device_img);
-
-        /* 대여 가능한지 여부를 표시함 */
-        if(arrayList.get(position).getFlag_borrow().equals("no")){
-            holder.borrow_possible.setVisibility(View.VISIBLE);
-        }else{
-            holder.borrow_possible.setVisibility(View.INVISIBLE);
-        }
-
-        if(arrayList.get(position).getFlag_borrow().equals("yes")){
-            holder.borrow_impossible.setVisibility(View.VISIBLE);
-        }else{
-            holder.borrow_impossible.setVisibility(View.INVISIBLE);
-        }
 
         // 각 게시물을 클릭할 경우, 채팅을 시작한다
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -70,10 +56,12 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.CustomViewHold
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("idx_writing", arrayList.get(position).getIndex());
                 editor.putString("writer", arrayList.get(position).getWriter());
+                editor.putString("content_writing", arrayList.get(position).getContent());
+                editor.putString("title_writing", arrayList.get(position).getTitle());
                 editor.commit();
 
-                // 채팅을 시작한다
-                Intent intent = new Intent(view.getContext(), ChatActivity.class);
+                // 게시물을 자세히 확인한다
+                Intent intent = new Intent(view.getContext(), ShowWrittenActivity.class);
                 view.getContext().startActivity(intent);
             }
         });
@@ -102,10 +90,6 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.CustomViewHold
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
-            this.tv_content = (TextView) itemView.findViewById(R.id.tv_content);
-            this.device_img = (ImageView) itemView.findViewById(R.id.device_img_frag1);
-            this.borrow_impossible = (TextView)itemView.findViewById(R.id.borrow_impossible);
-            this.borrow_possible = (TextView)itemView.findViewById(R.id.borrow_possible);
         }
     }
 }

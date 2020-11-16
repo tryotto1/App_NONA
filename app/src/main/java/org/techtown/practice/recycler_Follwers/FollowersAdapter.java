@@ -76,9 +76,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.Cust
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
-            this.tv_content = (TextView) itemView.findViewById(R.id.tv_content);
             this.tv_writer = (TextView) itemView.findViewById(R.id.tv_writer);
-            this.tv_date = (TextView) itemView.findViewById(R.id.tv_date);
             this.tv_email = (TextView) itemView.findViewById(R.id.tv_email);
         }
     }

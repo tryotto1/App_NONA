@@ -158,10 +158,19 @@ public class WriteActivity extends AppCompatActivity {
                 myRef_write.setValue(write_index);
 
                 // 내가 쓴 글을 확인한다
+                SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("idx_writing", String.valueOf(write_index));
+                editor.putString("writer", email_id);
+                editor.putString("content_writing", txt_content);
+                editor.putString("title_writing", title);
+                editor.commit();
+
                 Intent intent = new Intent(getApplicationContext(), ShowWrittenActivity.class);
-                intent.putExtra("title", title);
-                intent.putExtra("writing", writing);
-                intent.putExtra("writer", writer);
+//                intent.putExtra("title_writing", title);
+//                intent.putExtra("content_writing", txt_content);
+//                intent.putExtra("writer", writer);
+//                intent.putExtra("idx_writing", write_index + 1);
 
                 startActivity(intent);
                 finish();
@@ -210,7 +219,6 @@ public class WriteActivity extends AppCompatActivity {
 
                 /* 사진을 업로드하기 */
                 // 사진을 가져오기 위한 레퍼런스 - 다운로드
-
                 picture_Ref = mStorageRef.child("borrow_device/" + write_index);
                 picture_Ref.putFile(image)
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

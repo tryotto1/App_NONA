@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="30dp"
-                android:fontFamily="@font/neat_font"
+                android:fontFamily="@font/apple_sd_gothic_neo_b"
                 android:text="구매 목록"
                 android:textSize="20sp" />
 
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="30dp"
-                android:fontFamily="@font/neat_font"
+                android:fontFamily="@font/apple_sd_gothic_neo_b"
                 android:text="찜 목록"
                 android:textSize="20sp" />
 
@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="30dp"
-                android:fontFamily="@font/neat_font"
+                android:fontFamily="@font/apple_sd_gothic_neo_b"
                 android:text="내 프로필"
                 android:textSize="20sp" />
 
@@ -121,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="30dp"
-                android:fontFamily="@font/neat_font"
+                android:fontFamily="@font/apple_sd_gothic_neo_b"
                 android:text="로그아웃"
                 android:textSize="20sp" />
 
