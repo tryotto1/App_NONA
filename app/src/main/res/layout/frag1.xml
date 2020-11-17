@@ -21,8 +21,8 @@
         android:hint="검색어를 입력하세요"
         />
     <ImageView
-        android:layout_width="27dp"
-        android:layout_height="27dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:src="@drawable/glass"
         app:layout_constraintTop_toTopOf="@id/search_frag1"
         app:layout_constraintEnd_toEndOf="@id/search_frag1"
@@ -38,7 +38,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="60dp"
         android:layout_marginLeft="25dp"
-        android:src="@drawable/profile_tmp"
+        android:src="@drawable/profile_gray2"
         />
 
     <TextView
@@ -103,17 +103,16 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/pencil_white3"
         android:id="@+id/btn_write"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:backgroundTint="#FFFFFF"
-        android:src="@drawable/writing"
         app:backgroundTint="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/frag1_bottom"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginRight="20dp"
-        />
+        android:layout_marginRight="20dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

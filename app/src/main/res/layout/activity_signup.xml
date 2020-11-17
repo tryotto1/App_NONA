@@ -6,106 +6,216 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="16dp"
-    android:paddingTop="16dp"
-    android:paddingRight="16dp"
-    android:paddingBottom="16dp"
     >
 
-    <EditText
-        android:id="@+id/user_email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="280dp"
-        android:layout_marginRight="150dp"
-        android:fontFamily="@font/neat_font"
-        android:hint="이메일"
-        android:inputType="textEmailAddress"
-        android:selectAllOnFocus="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_email_verify"
-        app:layout_constraintStart_toEndOf="@id/user_email"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="400dp"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="280dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dp"
-        android:text="이메일 체크"
-        android:fontFamily="@font/neat_font"/>
-
-    <EditText
-        android:id="@+id/user_password"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginRight="150dp"
-        android:fontFamily="@font/neat_font"
-        android:hint="비밀번호"
-        android:imeActionLabel="Sign in"
-        android:imeOptions="actionDone"
-        android:inputType="textPassword"
-        android:selectAllOnFocus="true"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_email" />
-
-    <Button
-        android:layout_width="110dp"
-        android:layout_height="50dp"
-        android:id="@+id/btn_pwd_check"
-        app:layout_constraintStart_toEndOf="@id/user_password"
-        app:layout_constraintTop_toBottomOf="@id/btn_email_verify"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dp"
-        android:text="비밀번호 체크"
-        android:fontFamily="@font/neat_font"/>
-
-    <EditText
-        android:id="@+id/use_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginRight="150dp"
-        android:fontFamily="@font/neat_font"
-        android:hint="닉네임"
-        android:imeActionLabel="Sign in"
-        android:imeOptions="actionDone"
-        android:inputType="textPassword"
-        android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_password" />
+        android:id="@+id/bg_top"
+        android:background="@drawable/bg_login_signin_top"
+        android:elevation="30dp"
+        android:outlineAmbientShadowColor="#FFFFFF">
 
-    <Button
-        android:layout_width="110dp"
-        android:layout_height="50dp"
-        android:id="@+id/btn_name_check"
-        app:layout_constraintStart_toEndOf="@id/user_password"
-        app:layout_constraintTop_toBottomOf="@id/btn_pwd_check"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dp"
-        android:text="닉네임 체크"
-        android:fontFamily="@font/neat_font"/>
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="140dp"
+            android:fontFamily="@font/apple_sd_gothic_neo_h"
+            android:text="NONA"
+            android:textColor="#FFFFFF"
+            android:textSize="36sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.204"
+            android:textStyle="bold"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/tv_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/neat_font"
-        android:text="회원가입"
-        android:textColor="#000000"
-        android:textSize="24sp"
+        android:fontFamily="@font/apple_sd_gothic_neo_h"
+        android:text="회원가입 완료"
+        android:textColor="#999999"
+        android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/use_name" />
+        app:layout_constraintTop_toBottomOf="@id/inner_form"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/inner_form"
+        android:background="@drawable/form_login_signin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:elevation="30dp"
+        android:padding="20dp"
+        >
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="15dp"
+            android:id="@+id/signin_top1"
+            >
+
+            <EditText
+                android:id="@+id/user_email"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/apple_sd_gothic_neo_b"
+                android:hint="이메일"
+                android:inputType="textEmailAddress"
+                android:selectAllOnFocus="true"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textSize="15dp"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:textSize="13dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_email_verify"
+                app:layout_constraintStart_toEndOf="@id/user_email"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="이메일 체크"
+                android:background="@drawable/btn_login"
+                android:textColor="#ffffff"
+                android:fontFamily="@font/apple_sd_gothic_neo_b"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/signin_top1"
+            android:layout_marginTop="10dp"
+            android:id="@+id/signin_top2">
+
+            <EditText
+                android:id="@+id/user_password"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/apple_sd_gothic_neo_b"
+                android:hint="비밀번호"
+                android:imeActionLabel="Sign in"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:selectAllOnFocus="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textSize="15dp"
+                app:layout_constraintTop_toBottomOf="@+id/user_email" />
+
+            <Button
+                android:textSize="13dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_pwd_check"
+                app:layout_constraintStart_toEndOf="@id/user_password"
+                app:layout_constraintTop_toBottomOf="@id/btn_email_verify"
+                android:text="비밀번호 체크"
+                android:background="@drawable/btn_login"
+                android:textColor="#ffffff"
+                android:fontFamily="@font/apple_sd_gothic_neo_b"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/signin_top3"
+            app:layout_constraintTop_toBottomOf="@id/signin_top2"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="10dp"
+
+            android:layout_marginBottom="20dp"
+            >
+
+            <EditText
+                android:id="@+id/use_name"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/apple_sd_gothic_neo_b"
+                android:hint="닉네임"
+                android:imeActionLabel="Sign in"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:selectAllOnFocus="true"
+                android:textSize="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user_password" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_name_check"
+                app:layout_constraintStart_toEndOf="@id/user_password"
+                app:layout_constraintTop_toBottomOf="@id/btn_pwd_check"
+                android:text="닉네임 체크"
+                android:textSize="13dp"
+                android:background="@drawable/btn_login"
+                android:textColor="#ffffff"
+                android:fontFamily="@font/apple_sd_gothic_neo_b"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/signin_top4"
+            app:layout_constraintTop_toBottomOf="@id/signin_top3"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="@id/inner_form"
+            android:layout_marginBottom="20dp"
+            >
+
+            <EditText
+                android:id="@+id/use_major"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/apple_sd_gothic_neo_b"
+                android:hint="학과"
+                android:textSize="15dp"
+                android:imeActionLabel="Sign in"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:selectAllOnFocus="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user_password" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_major_check"
+                app:layout_constraintStart_toEndOf="@id/user_password"
+                app:layout_constraintTop_toBottomOf="@id/btn_pwd_check"
+                android:text="학과 체크"
+                android:textSize="13dp"
+                android:background="@drawable/btn_login"
+                android:textColor="#ffffff"
+                android:fontFamily="@font/apple_sd_gothic_neo_b"/>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

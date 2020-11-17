@@ -94,7 +94,10 @@ public class WriteActivity extends AppCompatActivity {
         myRef_idx.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                write_index = Integer.parseInt(dataSnapshot.getValue().toString());
+                if(dataSnapshot.getValue()!=null)
+                    write_index = Integer.parseInt(dataSnapshot.getValue().toString());
+                else
+                    write_index = 0;
             }
 
             @Override

@@ -66,12 +66,13 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="24dp"
-            android:fontFamily="@font/apple_sd_gothic_neo_h"
+            android:fontFamily="@font/apple_sd_gothic_neo_b"
             android:inputType="textEmailAddress"
             android:selectAllOnFocus="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_email" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_email"
+            android:textColor="#444444"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -90,7 +91,8 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="24dp"
-            android:fontFamily="@font/apple_sd_gothic_neo_h"
+            android:fontFamily="@font/apple_sd_gothic_neo_b"
+            android:textColor="#444444"
             android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

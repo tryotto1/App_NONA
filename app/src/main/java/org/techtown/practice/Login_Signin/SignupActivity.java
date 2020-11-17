@@ -3,6 +3,7 @@ package org.techtown.practice.Login_Signin;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -28,13 +29,13 @@ public class SignupActivity extends AppCompatActivity {
     FirebaseDatabase database;
 
     // 데이터베이스에서 가져온 ref 를 계속 사용해주기 위해 전역 선언을 한다
-    DatabaseReference myRef;
+    DatabaseReference myRef, myRef_usr;
 
     // firebase 회원가입용
     private FirebaseAuth mAuth;
 
     // 입력을 받도록 하기 위한 form
-    private EditText user_email, user_password, user_name;
+    private EditText user_email, user_password, user_name, user_major;
     private TextView tv_signup;
     private Button btn_email_verify, btn_pwd_check, btn_name_check;
 
@@ -60,10 +61,12 @@ public class SignupActivity extends AppCompatActivity {
         user_email = findViewById(R.id.user_email);
         user_password = findViewById(R.id.user_password);
         user_name = findViewById(R.id.use_name);
+        user_major = findViewById(R.id.use_major);
         tv_signup = findViewById(R.id.tv_signup);
         btn_email_verify = findViewById(R.id.btn_email_verify);
         btn_pwd_check = findViewById(R.id.btn_pwd_check);
         btn_name_check = findViewById(R.id.btn_name_check);
+
 
         // kupid 이메일인지 확인한다
         flag_email = Boolean.TRUE;
@@ -127,7 +130,7 @@ public class SignupActivity extends AppCompatActivity {
 
                                         // user 이메일에서, 앞부분만 떼어 온다 (firebase 규칙때문)
                                         int idx_domain = email.indexOf("@");
-                                        String email_id = email.substring(0, idx_domain);
+                                        final String email_id = email.substring(0, idx_domain);
 
                                         // firebase 데이터베이스에 user 관련 정보를 저장해준다
                                         myRef = database.getReference("user").child(email_id);
@@ -143,6 +146,17 @@ public class SignupActivity extends AppCompatActivity {
                                                                     Toast.LENGTH_LONG).show();
                                                             Toast.makeText(SignupActivity.this, "인증을 완료 후 로그인해주세요",
                                                                     Toast.LENGTH_LONG).show();
+
+                                                            // 유저 테이블에 전달할 내용들 저장
+                                                            Hashtable<String, String> user_info
+                                                                    = new Hashtable<String, String>();
+                                                            user_info.put("my_name", user_name.getText().toString());
+                                                            user_info.put("my_major", user_major.getText().toString());
+
+                                                            /* 쓴 글을 데이터베이스에 기록해준다 */
+                                                            // 글 자체를 저장해준다
+                                                            myRef_usr = database.getReference("user").child(email_id).child("my_info");
+                                                            myRef_usr.setValue(user_info);
 
                                                             // 일단 로그인 화면으로 보낸다
                                                             finish();

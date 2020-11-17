@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/graywhite"
+    android:background="#ffffff"
     android:orientation="vertical"
-    android:outlineAmbientShadowColor="#8A2929"
-    android:outlineSpotShadowColor="#C65959">
+    >
 
     <ImageView
         android:id="@+id/iv_back"
@@ -24,7 +23,8 @@
         android:id="@+id/sub_recycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_back"
         tools:layout_editor_absoluteX="0dp">
@@ -37,8 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
-        android:fontFamily="@font/neat_font"
-        android:text="내가 작성한 글 목록"
+        android:fontFamily="@font/apple_sd_gothic_neo_b"
+        android:text="내가 쓴 글 목록"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/rv"

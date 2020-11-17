@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,7 +41,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Frag1 extends Fragment {
     private View view;
-    private FloatingActionButton btn_write;
+    private ImageView btn_write;
 
     // 이메일, 아이디
     String my_email,my_id;
