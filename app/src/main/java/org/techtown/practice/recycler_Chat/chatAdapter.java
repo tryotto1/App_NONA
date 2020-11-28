@@ -39,14 +39,14 @@ public class chatAdapter extends RecyclerView.Adapter<chatAdapter.MyViewHolder> 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView textView, email_icon;
+        public TextView textView, email_icon, date_view;
         public CircleImageView img_profile;
         public MyViewHolder(View v) {
             super(v);
-
             textView = v.findViewById(R.id.tvChat);
             email_icon = v.findViewById(R.id.usr_email);
             img_profile = v.findViewById(R.id.usr_icon);
+            date_view = v.findViewById(R.id.chat_date);
         }
     }
 
@@ -99,44 +99,30 @@ public class chatAdapter extends RecyclerView.Adapter<chatAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         // 채팅 쓴 사람 아이디 구하기
-        String msg_writer = mDataset.get(position).getEmail().toString();
+        String msg_writer = mDataset.get(position).getEmail();
         int idx = msg_writer.indexOf("@");
         String msg_id = msg_writer.substring(0, idx);
-
-        if(this.writer_id.equals(msg_id)){
-            // 채팅 이메일 - 방장으로 표시
-            holder.email_icon.setText(mDataset.get(position).getEmail());
-            holder.email_icon.setBackgroundColor(0x0FEF0F0F);
-            Log.d(">>>", "onBindViewHolder: 내가 방장이다  writer id : " + writer_id +"  msgid: "+ msg_id);
-        }else{
-            // 채팅 이메일
-            holder.email_icon.setText(mDataset.get(position).getEmail());
-            Log.d(">>>", "onBindViewHolder: 방장 아님" + writer_id +"  msgid: "+ msg_id);
-        }
 
         // 채팅 메세지
         holder.textView.setText(mDataset.get(position).getMsg());
 
+        // 채팅 시간
+        holder.date_view.setText(mDataset.get(position).getDate());
 
+        // 채팅 이메일
+        holder.email_icon.setText(msg_id);
 
         /* 채팅 프로필 사진 설정 */
-        // shared preference - 이메일, 아이디 가져오기
-        String my_email = mDataset.get(position).getEmail();
-
-        int idx_domain = my_email.indexOf("@");
-        String my_id = my_email.substring(0, idx_domain);
-
-        // 사진 가져오기 - firebase
         StorageReference mStorageRef;
         StorageReference picture_Ref;
         mStorageRef = FirebaseStorage.getInstance().getReference();
-        picture_Ref = mStorageRef.child("img_profile/" + my_id);
-
+        picture_Ref = mStorageRef.child("img_profile/" + msg_id);
+        Log.d("??? >> ", "onBindViewHolder: " + msg_id);
         picture_Ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 // glide 사용해서 사진 설정하기
-                Glide.with(context).load(uri).into(holder.img_profile);
+                Glide.with(holder.itemView.getContext()).load(uri).into(holder.img_profile);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

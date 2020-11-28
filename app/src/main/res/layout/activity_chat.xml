@@ -4,59 +4,90 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EFF0F3"
     tools:context=".SubTab_Tab1.ChatActivity">
 
-    <androidx.appcompat.widget.AppCompatEditText
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/btn_chat"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:id="@+id/chat_msg"/>
-
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="50dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:text="채팅 보내기"
-        android:id="@+id/btn_chat"/>
+        android:layout_marginBottom="30dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/const_top">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/back"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/iv_back"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/apple_sd_gothic_neo_b"
+            android:text="쪽지"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="20dp"
+
+            android:layout_marginTop="30dp"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/chat_write"
+        android:id="@+id/const_chat_bottom"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/btn_chat"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
+            android:fontFamily="@font/apple_sd_gothic_neo_b"
+            android:padding="10dp"
+            android:background="@null"
+            android:id="@+id/chat_msg"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/chat_up_blue2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginRight="10dp"
+            android:id="@+id/btn_chat"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/btn_chat"
+        app:layout_constraintBottom_toTopOf="@id/const_chat_bottom"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="60dp"
+        app:layout_constraintTop_toBottomOf="@id/const_top"
+        android:layout_marginTop="30dp"
         android:id="@+id/chat_recycle"
         />
-
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="빌려받음"
-        android:id="@+id/btn_borrow"/>
-
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        app:layout_constraintEnd_toStartOf="@id/btn_borrow"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="돌려받음"
-        android:id="@+id/btn_give_back"/>
-
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        app:layout_constraintEnd_toStartOf="@id/btn_give_back"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="거래 신청"
-        android:id="@+id/btn_dib"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

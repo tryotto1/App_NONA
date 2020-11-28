@@ -1,16 +1,12 @@
 package org.techtown.practice.SubTab_Tab1;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import org.techtown.practice.Login_Signin.LoginActivity;
 import org.techtown.practice.R;
@@ -100,7 +95,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // revise profile activity로 가기
-                Intent intent = new Intent(getApplicationContext(), ProfileReviseAvtivity.class);
+                Intent intent = new Intent(getApplicationContext(), ProfileReviseActivity.class);
                 startActivity(intent);
             }
         });

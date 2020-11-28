@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,9 +33,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import org.techtown.practice.R;
+import org.techtown.practice.recycler_tab1.Tab1Data;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Hashtable;
 
@@ -50,14 +54,15 @@ public class WriteActivity extends AppCompatActivity {
     int write_index;
 
     // 입력 받을 수 있는 객체
-    TextView tv_save, tv_ai_poem;
-    EditText et_write, et_title;
-    private ImageView iv_back;
+    TextView tv_save, btn_tag, tag_list;
+    EditText et_write, et_title, et_tag, write_date_exchange, write_place_exchange;
+    private ImageView iv_back, btn_camera;
     private ImageView device_img;
 
     // 객체로부터 입력 받은 string 값
     String txt_content, title, writer;
-    String email_id;
+    String email_id, str_cur_tag, str_tag;
+    ArrayList<String> arr_tag;
 
     // intent 관련 코드 번호 받기위해
     int BTN_IMAGE_CODE = 1001;
@@ -82,12 +87,21 @@ public class WriteActivity extends AppCompatActivity {
         // 사진을 저장하기 위한 레퍼런스 - 업로드
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
+        // tag 리스트 저장하기 위해 초기화
+        arr_tag = new ArrayList<>();
+
         /* xml 연결 */
         tv_save = findViewById(R.id.tv_save);
         et_title = findViewById(R.id.et_title);
         et_write = findViewById(R.id.et_write);
         iv_back = findViewById(R.id.iv_back);
         device_img = findViewById(R.id.device_img);
+        et_tag = findViewById(R.id.et_tag);
+        btn_tag = findViewById(R.id.btn_tag);
+        btn_camera = findViewById(R.id.btn_camera);
+        tag_list = findViewById(R.id.tag_list);
+        write_date_exchange = findViewById(R.id.write_date_exchange);
+        write_place_exchange = findViewById(R.id.write_place_exchange);
 
         /* 현재 글의 인덱스 값을 받아온다 */
         myRef_idx = database.getReference("index").child("current_writing_index");
@@ -107,8 +121,27 @@ public class WriteActivity extends AppCompatActivity {
         });
 
         /* 버튼 연결 */
+        // 태그 버튼 클릭 시, 옆에 태그 표시된게 추가된다
+        btn_tag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                str_tag = et_tag.getText().toString();
+                str_cur_tag = tag_list.getText().toString();
+
+                // 현재 태그 목록에 추가해줌
+                str_cur_tag = str_cur_tag + "  #" + str_tag;
+                tag_list.setText(str_cur_tag);
+
+                // 태그 입력칸 지우기
+                et_tag.setText("");
+
+                // 하나씩 리스트에 넣어주기
+                arr_tag.add(str_tag);
+            }
+        });
+
         // 버튼 - 이미지
-        device_img.setOnClickListener(new View.OnClickListener() {
+        btn_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -135,6 +168,8 @@ public class WriteActivity extends AppCompatActivity {
                 Calendar c = Calendar.getInstance();
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss aa");
                 String datetime = dateFormat.format(c.getTime());
+                dateFormat = new SimpleDateFormat("M월 d일");
+                String datetime2 = dateFormat.format(c.getTime());
 
                 // 전달할 내용들 저장
                 Hashtable<String, String> writing
@@ -146,11 +181,20 @@ public class WriteActivity extends AppCompatActivity {
                 writing.put("flag_borrow", "no");
                 writing.put("flag_give_back", "no");
                 writing.put("writer", email_id);
+                writing.put("date", datetime2);
+                writing.put("write_date_exchange", write_date_exchange.getText().toString());
+                writing.put("write_place_exchange", write_place_exchange.getText().toString());
 
                 /* 쓴 글을 데이터베이스에 기록해준다 */
                 // 글 자체를 저장해준다
                 myRef_write = database.getReference("writings").child(""+write_index);
                 myRef_write.setValue(writing);
+
+                // 글에 대한 태그 값을 기록해준다
+                for(int i=0;i<arr_tag.size();i++){
+                    myRef_write.child("tag").child("tag " + i).setValue(arr_tag.get(i));
+                    database.getReference("index").child("tag").child(arr_tag.get(i)).child(datetime).setValue(String.valueOf(write_index));
+                }
 
                 // 인덱스 값을 저장해준다
                 myRef_write = database.getReference("index").child("current_writing_index");
@@ -170,10 +214,6 @@ public class WriteActivity extends AppCompatActivity {
                 editor.commit();
 
                 Intent intent = new Intent(getApplicationContext(), ShowWrittenActivity.class);
-//                intent.putExtra("title_writing", title);
-//                intent.putExtra("content_writing", txt_content);
-//                intent.putExtra("writer", writer);
-//                intent.putExtra("idx_writing", write_index + 1);
 
                 startActivity(intent);
                 finish();

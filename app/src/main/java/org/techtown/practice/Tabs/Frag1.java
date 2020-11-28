@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,7 +29,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.techtown.practice.SubTab_Drawer.MyWritingsActivity;
 import org.techtown.practice.SubTab_Tab1.ProfileActivity;
+import org.techtown.practice.SubTab_Tab1.SearchActivity;
 import org.techtown.practice.SubTab_Tab1.WriteActivity;
 import org.techtown.practice.R;
 
@@ -41,7 +45,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Frag1 extends Fragment {
     private View view;
-    private ImageView btn_write;
+    private ImageView btn_write, btn_search;
+    private EditText search_txt;
 
     // 이메일, 아이디
     String my_email,my_id;
@@ -55,6 +60,9 @@ public class Frag1 extends Fragment {
 
     // firebase 데이터베이스를 가져온다
     FirebaseDatabase database;
+
+    // Tab layout
+    TabLayout tab_layout_two;
 
     /* recycler view */
     RecyclerView recyclerView;
@@ -71,8 +79,13 @@ public class Frag1 extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        /* xml 연결 */
         view = inflater.inflate(R.layout.frag1, container, false);
         btn_write = view.findViewById(R.id.btn_write);
+        recyclerView = view.findViewById(R.id.frag1_recycle);
+        img_profile = view.findViewById(R.id.img_profile);
+        search_txt = view.findViewById(R.id.search_frag1);
+        btn_search = view.findViewById(R.id.btn_search);
 
         // firebase 데이터베이스 연결
         database = FirebaseDatabase.getInstance();
@@ -80,8 +93,21 @@ public class Frag1 extends Fragment {
         // 사진을 저장하기 위한 레퍼런스 - 업로드
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
+        /* 태그 검색용 연결 */
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 태그 검색 값을 가져오기
+                String str_search = search_txt.getText().toString();
+
+                // my write activity로 가기
+                Intent intent = new Intent(Frag1.this.getContext(), SearchActivity.class);
+                intent.putExtra("tag_value", str_search);
+                startActivity(intent);
+            }
+        });
+
         /*recycler view*/
-        recyclerView = view.findViewById(R.id.frag1_recycle);
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -100,9 +126,6 @@ public class Frag1 extends Fragment {
         });
 
         /* 프로필 사진 올리기 */
-        // xml 연결
-        img_profile = view.findViewById(R.id.img_profile);
-
         // 현재 내 이메일 가져오기
         SharedPreferences pref = getContext().getSharedPreferences("pref", getContext().MODE_PRIVATE);
         my_email = pref.getString("email", "");
@@ -121,7 +144,7 @@ public class Frag1 extends Fragment {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d("no image >> ", "onFailure: 이미지가 업로드 안 됨");
+
             }
         });
 

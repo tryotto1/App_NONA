@@ -77,6 +77,7 @@ public class MyWritingsActivity extends AppCompatActivity {
         myWritingsAdapter = new MyWritingsAdapter(arrayList, this);
         recyclerView.setAdapter(myWritingsAdapter);
 
+        /* 뒤로가기 버튼 */
         iv_back = findViewById(R.id.iv_back);
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override

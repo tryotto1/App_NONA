@@ -18,8 +18,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 return Frag1.newInstance();
-            case 1:
-                return Frag2.newInstance();
             default:
                 return null;
         }
@@ -27,7 +25,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 1;
     }
 
     @Nullable
@@ -35,8 +33,6 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0:
-                return "";
-            case 1:
                 return "";
             default:
                 return null;

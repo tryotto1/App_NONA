@@ -5,114 +5,111 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#455AE8">
-
-    <TextView
-        android:layout_width="270dp"
-        android:layout_height="40dp"
-        android:background="@drawable/form_search"
-        android:id="@+id/search_frag1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="60dp"
-        android:layout_marginLeft="40dp"
-        android:paddingTop="10dp"
-        android:paddingLeft="30dp"
-        android:hint="검색어를 입력하세요"
-        />
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/glass"
-        app:layout_constraintTop_toTopOf="@id/search_frag1"
-        app:layout_constraintEnd_toEndOf="@id/search_frag1"
-        app:layout_constraintBottom_toBottomOf="@id/search_frag1"
-        android:layout_marginRight="15dp"
-        />
-    <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/img_profile"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:layout_constraintStart_toEndOf="@id/search_frag1"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="60dp"
-        android:layout_marginLeft="25dp"
-        android:src="@drawable/profile_gray2"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="대여 소식"
-        android:fontFamily="@font/apple_sd_gothic_neo_b"
-        android:textColor="#FFFFFF"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/frag1_bottom"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginLeft="50dp"
-        android:layout_marginBottom="10dp"
-        android:id="@+id/txt_borrow"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="나눔 소식"
-        android:fontFamily="@font/apple_sd_gothic_neo_b"
-        android:textColor="#ABABAB"
-        android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/frag1_bottom"
-        app:layout_constraintStart_toEndOf="@+id/txt_borrow"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="10dp"/>
+    android:background="#eff0f3">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="550dp"
+        android:layout_height="190dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/frag1_bottom"
-        android:background="@drawable/bg_frag1_bottom"
-        >
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/bg_frag1_top"
+        android:id="@+id/const_top1_frag">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/pencil_white3"
+            android:id="@+id/btn_write"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="#FFFFFF"
+            app:backgroundTint="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginRight="30dp"/>
 
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/apple_sd_gothic_neo_b"
-            android:text="게시글"
+            android:id="@+id/search_const"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="35dp"
-            android:layout_marginLeft="50dp"
-            android:textSize="20dp"
-            android:id="@+id/txt_top_recy"/>
+            android:layout_marginTop="0dp"
+            >
+            <EditText
+                android:layout_width="270dp"
+                android:layout_height="40dp"
+                android:background="@drawable/form_search"
+                android:id="@+id/search_frag1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="60dp"
+                android:layout_marginLeft="50dp"
+                android:paddingLeft="30dp"
+                android:textSize="15dp"
+                android:hint="검색어를 입력하세요"
+                />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/glass"
+                app:layout_constraintTop_toTopOf="@id/search_frag1"
+                app:layout_constraintEnd_toEndOf="@id/search_frag1"
+                app:layout_constraintBottom_toBottomOf="@id/search_frag1"
+                android:layout_marginRight="15dp"
+                android:id="@+id/btn_search"
+                />
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/img_profile"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:layout_constraintStart_toEndOf="@id/search_frag1"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="60dp"
+                android:layout_marginLeft="25dp"
+                android:src="@drawable/profile_gray2"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+        <com.google.android.material.tabs.TabLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_top_recy"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:id="@+id/frag1_recycle"
-            />
+            app:tabTextColor="#ABABAB"
+            app:tabSelectedTextColor="#FFFFFF"
+            app:tabIndicator="@null"
+            style="@style/MyTabLayout"
+            android:id="@+id/tab_layout_two"
+            android:layout_marginLeft="30dp">
 
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="대여 소식"
+                />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="나눔 소식"
+                />
+        </com.google.android.material.tabs.TabLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/pencil_white3"
-        android:id="@+id/btn_write"
-        android:layout_marginBottom="10dp"
-        android:backgroundTint="#FFFFFF"
-        app:backgroundTint="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/frag1_bottom"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginRight="20dp"/>
+        app:layout_constraintTop_toBottomOf="@id/const_top1_frag"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/frag1_recycle"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

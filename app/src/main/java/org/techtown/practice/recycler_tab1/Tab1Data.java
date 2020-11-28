@@ -3,8 +3,33 @@ package org.techtown.practice.recycler_tab1;
 import android.net.Uri;
 
 public class Tab1Data {
-    private String index, title, txt_content, flag_borrow, flag_buy, flag_give_back, writer;
+    private String index, title, txt_content, flag_borrow, flag_buy, flag_give_back, writer, date;
+    String write_date_exchange, write_place_exchange;
     private Uri uri;
+
+    public void setWrite_date_exchange(String write_date_exchange) {
+        this.write_date_exchange = write_date_exchange;
+    }
+
+    public void setWrite_place_exchange(String write_place_exchange) {
+        this.write_place_exchange = write_place_exchange;
+    }
+
+    public String getWrite_date_exchange() {
+        return write_date_exchange;
+    }
+
+    public String getWrite_place_exchange() {
+        return write_place_exchange;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getDate() {
+        return date;
+    }
 
     public void setWriter(String writer) {
         this.writer = writer;

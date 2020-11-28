@@ -3,6 +3,15 @@ package org.techtown.practice.recycler_Chat;
 public class chatData {
     String email;
     String msg;
+    String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public String getEmail() {
         return email;

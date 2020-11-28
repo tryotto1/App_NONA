@@ -232,8 +232,6 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
-
-
     /* 왼쪽 drawer를 열고 닫을 수 있도록 하는 listener
         - 버튼 클릭 이외에도 자연스럽게 열 수 있도록 하기 위함*/
     DrawerLayout.DrawerListener listener = new DrawerLayout.DrawerListener() {

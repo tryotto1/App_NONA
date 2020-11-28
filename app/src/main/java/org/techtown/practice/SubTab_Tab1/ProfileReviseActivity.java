@@ -23,7 +23,7 @@ import com.google.firebase.storage.UploadTask;
 
 import org.techtown.practice.R;
 
-public class ProfileReviseAvtivity extends AppCompatActivity {
+public class ProfileReviseActivity extends AppCompatActivity {
     // 사진 Uri 가져오기 위한 firebase
     StorageReference mStorageRef;
     StorageReference picture_Ref;
@@ -77,7 +77,7 @@ public class ProfileReviseAvtivity extends AppCompatActivity {
             @Override
             public void onSuccess(Uri uri) {
                 // glide 사용해서 사진 설정하기
-                Glide.with(ProfileReviseAvtivity.this).load(uri).into(img_profile);
+                Glide.with(ProfileReviseActivity.this).load(uri).into(img_profile);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

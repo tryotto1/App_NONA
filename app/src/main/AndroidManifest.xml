@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SubTab_Tab1.ProfileReviseAvtivity"></activity>
+        <activity android:name=".SubTab_Tab1.SearchActivity"></activity>
+        <activity android:name=".SubTab_Tab1.ProfileReviseActivity" />
         <activity android:name=".SubTab_Tab1.ProfileActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
