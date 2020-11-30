@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -86,10 +87,15 @@ public class DibActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 final DibData writing = dataSnapshot.getValue(DibData.class);
 
+                Log.d("list of dib", "onChildAdded: " + str_my_dib);
+
                 String[] arr_my_dib = str_my_dib.split(",");
                 for (String one_my_dib : arr_my_dib) {
                     // 쓴 글에 대한 인덱스 값을 가져온다
                     String idx = writing.getIndex();
+
+                    Log.d("my all written idx", "onChildAdded: " + idx);
+                    Log.d("my dib idx", "onChildAdded: " + one_my_dib);
 
                     // 내가 찜한 글이 아니면 넘어간다
                     if(!idx.equals(one_my_dib))

@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:fontFamily="@font/apple_sd_gothic_neo_b"
-        android:text="프로필 수정"
+        android:text="사진 변경"
         android:background="@drawable/btn_login"
         android:textColor="#FFFFFF"
         app:layout_constraintTop_toBottomOf="@+id/usr_email"
@@ -60,7 +60,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_re_profile"
         android:layout_marginTop="30dp"
-        />
+        >
+    </Button>
 
     <ImageView
         android:layout_width="20dp"

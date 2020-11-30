@@ -67,7 +67,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="60dp"
                 android:layout_marginLeft="25dp"
-                android:src="@drawable/profile_gray2"
+                android:src="@drawable/profile_tmp"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -81,6 +81,7 @@
             app:tabIndicator="@null"
             style="@style/MyTabLayout"
             android:id="@+id/tab_layout_two"
+            android:layout_marginBottom="5dp"
             android:layout_marginLeft="30dp">
 
             <com.google.android.material.tabs.TabItem
@@ -107,8 +108,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:id="@+id/frag1_recycle"
         />
 

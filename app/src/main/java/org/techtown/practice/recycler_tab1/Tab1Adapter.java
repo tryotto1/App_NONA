@@ -86,6 +86,7 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.CustomViewHold
         holder.tv_title.setText(arrayList.get(position).getTitle());
         holder.tv_writer.setText(arrayList.get(position).getWriter());
         holder.tv_date.setText(arrayList.get(position).getDate());
+        holder.tv_content.setText(arrayList.get(position).getContent());
         Glide.with(holder.itemView.getContext()).load(arrayList.get(position).getUri()).into(holder.device_img);
 
         // 해당 인덱스에 대응되는 사진 Uri 값을 어답터에 넣어준다 - 다운로드
@@ -122,6 +123,9 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.CustomViewHold
 
                 // 토스트
                 Toast.makeText(context, "찜 했습니다", Toast.LENGTH_SHORT).show();
+
+                // 하트 색깔을 바꿔준다
+                holder.frag1_like.setImageResource(R.drawable.heart_red);
             }
         });
 
@@ -164,7 +168,7 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.CustomViewHold
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        protected TextView tv_title, tv_writer, tv_date, borrow_impossible;
+        protected TextView tv_title, tv_writer, tv_date, tv_content;
         protected LinearLayout layout;
         protected ImageView device_img;
         protected CircleImageView writer_img;
@@ -172,6 +176,7 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.CustomViewHold
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
+            this.tv_content = itemView.findViewById(R.id.item_content);
             this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
             this.device_img = itemView.findViewById(R.id.frag1_img_item);
             this.writer_img = itemView.findViewById(R.id.writer_img_frag1);

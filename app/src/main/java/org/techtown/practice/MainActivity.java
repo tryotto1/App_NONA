@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
         int idx_domain = my_email.indexOf("@");
         my_id = my_email.substring(0, idx_domain);
 
-
         // 왼쪽 drawer menu 여는 코드
         ImageButton btn_open = (ImageButton)findViewById(R.id.btn_open);
         btn_open.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 내가 대여한 목록
+        // 내가 찜한 목록
         my_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -154,12 +153,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // firebase에 올라온 글 내용을 실시간으로 업데이트 해주는 listener
+        /* 내가 찜한 글 가져오기 */
         ChildEventListener childEventListener_Dib_List = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 String dib_idx = dataSnapshot.getValue().toString();
 
+                Log.d("initial idx dib", "onChildAdded: " + dib_idx);
+
+                dib_idx = dib_idx.substring(5, dib_idx.length()-1);
+
+                Log.d("part idx", "onChildAdded: " + dib_idx);
                 str_list_dib += (dib_idx+",");
                 Log.d("dib_idx", "onChildAdded: "+str_list_dib);
             }
@@ -184,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         };
         database.getReference("user").child(my_id).child("my_dib").addChildEventListener(childEventListener_Dib_List);
 
-        // firebase에 올라온 글 내용을 실시간으로 업데이트 해주는 listener
+        /* 내가 쓴 글 가져오기 */
         ChildEventListener childEventListener_Write_List = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
