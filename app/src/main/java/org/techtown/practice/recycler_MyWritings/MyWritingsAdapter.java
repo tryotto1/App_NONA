@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import org.techtown.practice.SubTab_Tab1.ChatActivity;
+import org.techtown.practice.SubTab_Tab1.MyWritingsChatActivity;
 import org.techtown.practice.SubTab_Tab1.ShowWrittenActivity;
 import org.techtown.practice.R;
 import org.techtown.practice.recycler_Dib.DibAdapter;
@@ -125,7 +127,6 @@ public class MyWritingsAdapter extends RecyclerView.Adapter<MyWritingsAdapter.Cu
             }
         });
 
-
         // 각 게시물을 클릭할 경우, 채팅을 시작한다
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,11 +135,16 @@ public class MyWritingsAdapter extends RecyclerView.Adapter<MyWritingsAdapter.Cu
                 SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("idx_writing", arrayList.get(position).getIndex());
+                Log.d("my writings adapter", "onClick: " + arrayList.get(position).getWriter());
                 editor.commit();
 
-                // 채팅을 시작한다
-                Intent intent = new Intent(view.getContext(), ChatActivity.class);
+                // 내가 쓴 글일 경우, 나와 쪽지 주고받는 모든 유저들 리스트 가져옴
+                Intent intent = new Intent(view.getContext(), MyWritingsChatActivity.class);
                 view.getContext().startActivity(intent);
+
+//                // 채팅을 시작한다
+//                Intent intent = new Intent(view.getContext(), ChatActivity.class);
+//                view.getContext().startActivity(intent);
             }
         });
     }

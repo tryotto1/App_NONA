@@ -35,8 +35,11 @@ import org.techtown.practice.SubTab_Tab1.SearchActivity;
 import org.techtown.practice.SubTab_Tab1.WriteActivity;
 import org.techtown.practice.R;
 
+import org.techtown.practice.SubTab_Tab1.WriteDonateActivity;
 import org.techtown.practice.recycler_tab1.Tab1Adapter;
 import org.techtown.practice.recycler_tab1.Tab1Data;
+import org.techtown.practice.recycler_tab1_donate.Tab1DonateAdapter;
+import org.techtown.practice.recycler_tab1_donate.Tab1DonateData;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -61,14 +64,17 @@ public class Frag1 extends Fragment {
     // firebase 데이터베이스를 가져온다
     FirebaseDatabase database;
 
-    // Tab layout
-    TabLayout tab_layout_two;
+    /* Tab Layout용 */
+    private TabLayout tabLayout_recycle;
+    int pos;
 
     /* recycler view */
-    RecyclerView recyclerView;
-    LinearLayoutManager linearLayoutManager;
+    RecyclerView recyclerView, recyclerView2;
+    LinearLayoutManager linearLayoutManager, linearLayoutManager2;
     private ArrayList<Tab1Data> arrayList;
+    private ArrayList<Tab1DonateData> arrayList_donate;
     private Tab1Adapter tab1Adapter;
+    private Tab1DonateAdapter tab1DonateAdapter;
 
     // ViewPagerAdapter를 위해서
     public static Frag1 newInstance() {
@@ -83,6 +89,7 @@ public class Frag1 extends Fragment {
         view = inflater.inflate(R.layout.frag1, container, false);
         btn_write = view.findViewById(R.id.btn_write);
         recyclerView = view.findViewById(R.id.frag1_recycle);
+        recyclerView2 = view.findViewById(R.id.frag1_recycle2);
         img_profile = view.findViewById(R.id.img_profile);
         search_txt = view.findViewById(R.id.search_frag1);
         btn_search = view.findViewById(R.id.btn_search);
@@ -115,15 +122,61 @@ public class Frag1 extends Fragment {
         tab1Adapter = new Tab1Adapter(arrayList, getContext());
         recyclerView.setAdapter(tab1Adapter);
 
+        /*recycler view 2 - 나눔 */
+        linearLayoutManager2 = new LinearLayoutManager(getContext());
+        recyclerView2.setLayoutManager(linearLayoutManager2);
+
+        arrayList_donate = new ArrayList<>();
+        tab1DonateAdapter = new Tab1DonateAdapter(arrayList_donate, getContext());
+        recyclerView2.setAdapter(tab1DonateAdapter);
+
         /* button - 새로운 게시물 작성하기 */
         btn_write.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 글 쓰는 activity로 넘겨준다
-                Intent intent = new Intent(getActivity(), WriteActivity.class);
-                startActivity(intent);
+                if(pos == 0){
+                    // 글 쓰는 activity로 넘겨준다
+                    Intent intent = new Intent(getActivity(), WriteActivity.class);
+                    startActivity(intent);
+                }else{
+                    // 글 쓰는 activity로 넘겨준다
+                    Intent intent = new Intent(getActivity(), WriteDonateActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
+
+        /* 탭 연결 설정 */
+        tabLayout_recycle = (TabLayout) view.findViewById(R.id.tab_layout_two) ;
+        tabLayout_recycle.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                // TODO : process tab selection event.
+                pos = tab.getPosition() ;
+
+                switch (pos) {
+                    case 0 :
+                        view.findViewById(R.id.frag1_recycle).setVisibility(View.VISIBLE) ;
+                        view.findViewById(R.id.frag1_recycle2).setVisibility(View.INVISIBLE) ;
+                        break ;
+                    case 1 :
+                        view.findViewById(R.id.frag1_recycle).setVisibility(View.INVISIBLE) ;
+                        view.findViewById(R.id.frag1_recycle2).setVisibility(View.VISIBLE) ;
+                        break ;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                // do nothing
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                // do nothing
+            }
+        }) ;
 
         /* 프로필 사진 올리기 */
         // 현재 내 이메일 가져오기
@@ -148,7 +201,7 @@ public class Frag1 extends Fragment {
             }
         });
 
-        // firebase에 올라온 글 내용을 실시간으로 업데이트 해주는 listener
+        /* 대여 글 실시간 업데이트 */
         ChildEventListener childEventListener_frag1 = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
@@ -198,6 +251,57 @@ public class Frag1 extends Fragment {
             }
         };
         database.getReference("writings").addChildEventListener(childEventListener_frag1);
+
+        /* 나눔 글 실시간으로 업데이트 */
+        ChildEventListener childEventListener_frag1_donate = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                final Tab1DonateData writing = dataSnapshot.getValue(Tab1DonateData.class);
+
+                // 쓴 글에 대한 인덱스 값을 가져온다
+                String _idx = writing.getIndex();
+                int idx = Integer.parseInt(_idx);
+
+                // 해당 인덱스에 대응되는 사진 Uri 값을 어답터에 넣어준다 - 다운로드
+                picture_Ref = mStorageRef.child("borrow_device/" + idx);
+                picture_Ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        writing.setUri(uri);
+
+                        // 게시물 받아온 걸 넣어준다
+                        arrayList_donate.add(writing);
+                        tab1DonateAdapter.notifyDataSetChanged();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // 게시물 받아온 걸 넣어준다
+                        arrayList_donate.add(writing);
+                        tab1DonateAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
+                Tab1Data writing = dataSnapshot.getValue(Tab1Data.class);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                String commentKey = dataSnapshot.getKey();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+        database.getReference("writings_donate").addChildEventListener(childEventListener_frag1_donate);
 
         return view;
     }

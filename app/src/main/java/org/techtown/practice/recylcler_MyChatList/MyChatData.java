@@ -1,8 +1,8 @@
-package org.techtown.practice.recycler_Dib;
+package org.techtown.practice.recylcler_MyChatList;
 
 import android.net.Uri;
 
-public class DibData {
+public class MyChatData {
     private String index, title, txt_content, flag_borrow, flag_buy, flag_give_back, writer, date;
     String write_date_exchange, write_place_exchange;
     private Uri uri;

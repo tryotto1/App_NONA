@@ -23,12 +23,14 @@
         </activity>
         <activity android:name=".Login_Signin.LoginActivity" />
         <activity android:name=".Login_Signin.SignupActivity" />
-        <activity android:name=".SubTab_Drawer.FollowingActivity" />
+        <activity android:name=".SubTab_Drawer.MyChatActivity" />
         <activity android:name=".SubTab_Drawer.DibActivity" />
         <activity android:name=".SubTab_Drawer.MyWritingsActivity" />
         <activity android:name=".SubTab_Tab1.ShowWrittenActivity" />
         <activity android:name=".SubTab_Tab1.WriteActivity" />
         <activity android:name=".SubTab_Tab1.ChatActivity" />
+        <activity android:name=".SubTab_Tab1.WriteDonateActivity" />
+        <activity android:name=".SubTab_Tab1.MyWritingsChatActivity" />
         <activity android:name=".MainActivity" />
     </application>
 

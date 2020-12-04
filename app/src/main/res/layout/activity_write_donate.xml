@@ -79,19 +79,20 @@
         app:srcCompat="@drawable/back" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="320dp"
-        android:layout_height="120dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         app:cardCornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@id/bottom_const_write"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_write"
         app:cardElevation="0dp">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="320dp"
+            android:layout_height="100dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toBottomOf="@id/et_write"
@@ -103,8 +104,36 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_const_write"
+        android:layout_marginBottom="5dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/apple_sd_gothic_neo_b"
+            android:text="매칭이 안 될 경우 필요한 곳에 기부하시겠습니까?"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="#aaaaaa"
+            app:layout_constraintStart_toEndOf="@id/btn_random_donate"
+            android:layout_marginLeft="10dp"
+            />
+
+        <CheckBox
+            android:padding="5dp"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/btn_random_donate"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="180dp"
+        android:layout_height="170dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -145,6 +174,7 @@
             android:background="@null"
             />
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -213,11 +243,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/tag_list"
             android:layout_marginTop="20dp"
-            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginLeft="35dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="2dp"
             android:textSize="15dp"
             android:text="#태그"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/btn_tag"
             android:fontFamily="@font/apple_sd_gothic_neo_b"
             android:textColor="#ABABAB"

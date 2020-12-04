@@ -47,6 +47,9 @@ public class ChatActivity extends AppCompatActivity {
     String my_email;
     String my_id;
 
+    // 이미지 뷰
+    ImageView iv_back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,15 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.chat_recycle);
         final EditText chat_msg = (EditText)findViewById(R.id.chat_msg);
         ImageView chat_btn =findViewById(R.id.btn_chat);
+
+        /* 버튼 클릭 연결 */
+        iv_back = findViewById(R.id.iv_back);
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         // 현재 내 이메일 가져오기
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
@@ -70,9 +82,10 @@ public class ChatActivity extends AppCompatActivity {
         // 작성자 아이디 가져오기
         final String writer = pref.getString("writer", " ");
 
-        Log.d("writer -->", "onCreate: " + writer);
-        Log.d("my_idx -->", "onCreate: " + my_id);
+        // 내 게시물에서 대화하고 있다면, 타인의 아이디 가져옴
+        final String chat_usr = pref.getString("chat_usr", "no");
 
+        Log.d(">>?>>", "onCreate: (writer)" + writer + " (chat_usr) " + chat_usr + " (my_id) " + my_id);
 
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
@@ -85,13 +98,6 @@ public class ChatActivity extends AppCompatActivity {
         chatArray = new ArrayList<>();
         mAdapter = new chatAdapter(chatArray, getApplicationContext(), writer);
         recyclerView.setAdapter(mAdapter);
-
-        /* 작성자가 채팅방에 들어갔을 경우와 들어가지 않았을 경우 나누기 */
-        if(my_id.equals(writer)){
-            Log.d(">>>", "onCreate: " + "내가 쓴 게 맞음");
-        }else{
-            Log.d(">>>", "onCreate: " + "내가 쓴 게 아님");
-        }
 
         // 버튼 설정 - 메세지 보내기
         chat_btn.setOnClickListener(new View.OnClickListener() {
@@ -114,10 +120,19 @@ public class ChatActivity extends AppCompatActivity {
                 msg.put("msg", str);
                 msg.put("date", date);
 
-                // firebase 데이터베이스에서, "message" 관련된 ref 를 가져온다
-                myRef = database.getReference("message").child(idx_writing).child(datetime);
-                myRef.setValue(msg);
-
+                // 내가 쓴 글에서, 다른 사람과 채팅시
+                if(chat_usr.equals(my_id)==false&& writer.equals(my_id)==true) {
+                    Log.d("11", "onCreate: 여기1>>");
+                    myRef = database.getReference("message").child(idx_writing).child(chat_usr).child(datetime);
+                    myRef.setValue(msg);
+                }
+                // 다른 사람이 쓴 글에서, 내가 채팅시
+                else if(chat_usr.equals(my_id)==true && writer.equals(my_id)==false){
+                    Log.d("22", "onCreate: 여기2>>");
+                // 내 게시물에서 다른 사람이랑 대화중
+                    myRef = database.getReference("message").child(idx_writing).child(my_id).child(datetime);
+                    myRef.setValue(msg);
+                }
                 // 채팅 입력창 초기화
                 chat_msg.getText().clear();
             }
@@ -129,9 +144,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 // A new comment has been added, add it to the displayed list
                 chatData chat = dataSnapshot.getValue(chatData.class);
-
-                Log.d("asd",""+chat.getMsg().toString());
-
+                Log.d("???", "onChildAdded: ???");
                 // chat array 추가
                 chatArray.add(chat);
                 mAdapter.notifyDataSetChanged();
@@ -156,6 +169,17 @@ public class ChatActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         };
-        database.getReference("message").child(idx_writing).addChildEventListener(childEventListener_chat);
+
+        // 다른 사람 게시물에서 내가 채팅한것 가져오기
+        if(chat_usr.equals(my_id)==true && writer.equals(my_id)==false){
+            Log.d("11", "onCreate: 여기1  " + idx_writing + "??");
+            database.getReference("message").child(idx_writing).child(my_id).addChildEventListener(childEventListener_chat);
+        }
+        // 내가 쓴 게시물에서, 다른 사람과 채팅한거 가져오기
+        else if(chat_usr.equals(my_id)==false && writer.equals(my_id)==true){
+            Log.d("22", "onCreate: 여기2");
+        // 내 게시물에서 다른 사람이랑 대화중
+            database.getReference("message").child(idx_writing).child(chat_usr).addChildEventListener(childEventListener_chat);
+        }
     }
 }

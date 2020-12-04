@@ -1,4 +1,4 @@
-package org.techtown.practice.recycler_Search;
+package org.techtown.practice.recylcler_MyChatList;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,8 +23,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.techtown.practice.SubTab_Tab1.ChatActivity;
 import org.techtown.practice.R;
+import org.techtown.practice.SubTab_Tab1.ChatActivity;
+import org.techtown.practice.recycler_MyWritings.MyWritingsAdapter;
 import org.techtown.practice.recycler_MyWritings.MyWritingsData;
 
 import java.text.SimpleDateFormat;
@@ -36,7 +37,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.CustomViewHolder> {
+public class MyChatAdapter extends RecyclerView.Adapter<MyChatAdapter.CustomViewHolder> {
     Context context;
 
     // 사진 Uri 가져오기 위한 firebase
@@ -49,18 +50,18 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.CustomView
     // firebase 데이터베이스를 가져온다
     FirebaseDatabase database;
 
-    private ArrayList<SearchData> arrayList; // 서버에서 받는 정보
+    private ArrayList<MyChatData> arrayList; // 서버에서 받는 정보
 
-    public SearchAdapter(ArrayList<SearchData> arrayList, Context context) {
+    public MyChatAdapter(ArrayList<MyChatData> arrayList, Context context) {
         this.context = context;
         this.arrayList = arrayList;
     }
 
     @NonNull
     @Override
-    public SearchAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_poem, parent, false);
-        SearchAdapter.CustomViewHolder holder = new SearchAdapter.CustomViewHolder(view);
+        CustomViewHolder holder = new CustomViewHolder(view);
 
         // 사진을 저장하기 위한 레퍼런스 - 업로드
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -79,7 +80,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.CustomView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final SearchAdapter.CustomViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final MyChatAdapter.CustomViewHolder holder, final int position) {
         holder.tv_title.setText(arrayList.get(position).getTitle());
         holder.tv_writer.setText(arrayList.get(position).getWriter());
         holder.tv_date.setText(arrayList.get(position).getDate());
@@ -124,27 +125,23 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.CustomView
         });
 
 
-        if(arrayList.get(position)!=null) {
-            holder.tv_title.setText(arrayList.get(position).getTitle());
+        // 각 게시물을 클릭할 경우, 채팅을 시작한다
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 몇 번째 게시물인지 chatActivity에 전달한다
+                SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("idx_writing", arrayList.get(position).getIndex());
+                editor.putString("chat_usr", my_id);
+                editor.putString("writer", arrayList.get(position).getWriter());
+                editor.commit();
 
-            // 각 게시물을 클릭할 경우, 채팅을 시작한다
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // 몇 번째 게시물인지 chatActivity에 전달한다
-                    SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.putString("idx_writing", arrayList.get(position).getIndex());
-                    editor.putString("writer", arrayList.get(position).getWriter());
-                    editor.putString("chat_usr", my_id);
-                    editor.commit();
-
-                    // 채팅을 시작한다
-                    Intent intent = new Intent(view.getContext(), ChatActivity.class);
-                    view.getContext().startActivity(intent);
-                }
-            });
-        }
+                // 채팅을 시작한다
+                Intent intent = new Intent(view.getContext(), ChatActivity.class);
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -171,7 +168,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.CustomView
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             this.tv_content = itemView.findViewById(R.id.item_content);
-            this.tv_title = (TextView) itemView.findViewById(R.id.tv_title);
+            this.tv_title = itemView.findViewById(R.id.tv_title);
             this.device_img = itemView.findViewById(R.id.frag1_img_item);
             this.writer_img = itemView.findViewById(R.id.writer_img_frag1);
             this.tv_writer = itemView.findViewById(R.id.writer_name_frag1);

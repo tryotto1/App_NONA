@@ -129,12 +129,37 @@ public class ShowWrittenActivity extends AppCompatActivity {
             }
         });
 
+        /* 채팅 보내기 */
         btn_one_write_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 채팅을 시작한다
-                Intent intent = new Intent(view.getContext(), ChatActivity.class);
-                view.getContext().startActivity(intent);
+                // 내가 쓴 글이 아닐 경우, 바로 채팅 시작
+                if(my_id.equals(writer)==false) {
+                    // 몇 번째 게시물인지 chatActivity에 전달한다
+                    SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("idx_writing", idx_writing);
+                    editor.putString("chat_usr", my_id);
+                    editor.putString("writer", writer);
+                    editor.commit();
+
+                    Log.d("...>>", "onClick: (idx)" + idx_writing + " (id) " + my_id + " (writer) " + writer);
+
+                    // firebase 데이터베이스에 user 관련 정보를 저장해준다
+                    database.getReference("user").child(my_id).child("my_chat").child(idx_writing).setValue(idx_writing);
+
+                    // 토스트
+                    Toast.makeText(ShowWrittenActivity.this, "쪽지 목록에 추가 했습니다", Toast.LENGTH_SHORT).show();
+
+                    // 채팅을 시작한다
+                    Intent intent = new Intent(view.getContext(), ChatActivity.class);
+                    view.getContext().startActivity(intent);
+                }else{
+                    Log.d("22", "onClick: 여긴가?");
+                    // 내가 쓴 글일 경우, 나와 쪽지 주고받는 모든 유저들 리스트 가져옴
+                    Intent intent = new Intent(view.getContext(), MyWritingsChatActivity.class);
+                    view.getContext().startActivity(intent);
+                }
             }
         });
 
@@ -165,10 +190,10 @@ public class ShowWrittenActivity extends AppCompatActivity {
         btn_one_write_dib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 전달할 시간 저장
-                Calendar c = Calendar.getInstance();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss aa");
-                String datetime = dateFormat.format(c.getTime());
+//                // 전달할 시간 저장
+//                Calendar c = Calendar.getInstance();
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss aa");
+//                String datetime = dateFormat.format(c.getTime());
 
                 // 관련 정보를 firebase에 새로 데이터베이스를 만들어서 저장
                 Hashtable<String, String> dib
@@ -176,7 +201,7 @@ public class ShowWrittenActivity extends AppCompatActivity {
                 dib.put("dib", idx_writing);
 
                 // firebase 데이터베이스에 user 관련 정보를 저장해준다
-                database.getReference("user").child(my_id).child("my_dib").child(datetime).setValue(dib);
+                database.getReference("user").child(my_id).child("my_dib").child(idx_writing).setValue(dib);
 
                 // 토스트
                 Toast.makeText(ShowWrittenActivity.this, "찜 했습니다", Toast.LENGTH_SHORT).show();

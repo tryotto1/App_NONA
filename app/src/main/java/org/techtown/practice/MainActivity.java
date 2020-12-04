@@ -4,20 +4,19 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -25,13 +24,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
 
-import org.techtown.practice.SubTab_Drawer.FollowingActivity;
 import org.techtown.practice.SubTab_Drawer.DibActivity;
 import org.techtown.practice.Login_Signin.LoginActivity;
 import org.techtown.practice.SubTab_Drawer.MyWritingsActivity;
 import org.techtown.practice.SubTab_Tab1.ProfileActivity;
 import org.techtown.practice.Tabs.ViewPagerAdapter;
-import org.techtown.practice.recycler_Dib.DibData;
 import org.techtown.practice.recycler_tab1.Tab1Data;
 
 import java.util.ArrayList;
@@ -62,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Dib List를 전달하기 위한 리스트
     ArrayList<String> List_Dib;
-    String str_list_dib = "", str_list_write = "";
+    String str_list_dib = "", str_list_write = "", str_list_chat = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         int idx_domain = my_email.indexOf("@");
         my_id = my_email.substring(0, idx_domain);
 
+        Log.d("내 지금 아이디", "onCreate: " + my_id);
+
         // 왼쪽 drawer menu 여는 코드
         ImageButton btn_open = (ImageButton)findViewById(R.id.btn_open);
         btn_open.setOnClickListener(new View.OnClickListener() {
@@ -105,11 +104,12 @@ public class MainActivity extends AppCompatActivity {
         my_writing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 모든 shared preference 저장값들을 삭제한다 - 부정 로그인 방지
                 SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("str_list_write", str_list_write);
                 editor.commit();
+
+                Log.d("?", "onClick: str_list_write" + str_list_write);
 
                 // my write activity로 가기
                 Intent intent = new Intent(getApplicationContext(), MyWritingsActivity.class);
@@ -121,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
         my_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 모든 shared preference 저장값들을 삭제한다 - 부정 로그인 방지
                 SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.putString("str_list_dib", str_list_dib);
@@ -137,6 +136,11 @@ public class MainActivity extends AppCompatActivity {
         my_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("str_list_chat", str_list_chat);
+                editor.commit();
+
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
             }
@@ -195,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                 String write_idx = dataSnapshot.getValue().toString();
 
                 str_list_write += (write_idx+",");
-                Log.d("dib_idx", "onChildAdded: " + str_list_write);
+                Log.d("write_idx", "onChildAdded: " + str_list_write);
             }
 
             @Override
@@ -217,6 +221,36 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         database.getReference("user").child(my_id).child("my_write").addChildEventListener(childEventListener_Write_List);
+
+        /* 내가 채팅하는 글 가져오기 */
+        ChildEventListener childEventListener_Chat_List = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                String write_idx = dataSnapshot.getValue().toString();
+
+                str_list_chat += (write_idx+",");
+                Log.d("dib_idx", "onChildAdded: " + str_list_write);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
+                Tab1Data writing = dataSnapshot.getValue(Tab1Data.class);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                String commentKey = dataSnapshot.getKey();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+        database.getReference("user").child(my_id).child("my_chat").addChildEventListener(childEventListener_Chat_List);
 
         /* 왼쪽 drawer에 대한 설정을 해줌 */
         drawerLayout.setDrawerListener(listener);

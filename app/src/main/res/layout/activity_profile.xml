@@ -112,7 +112,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/apple_sd_gothic_neo_b"
-        android:text="내 쪽지함"
+        android:text="내가 보낸쪽지"
         app:layout_constraintStart_toEndOf="@id/my_chat_icon"
         app:layout_constraintTop_toTopOf="@id/btn_profile_chat"
         android:elevation="5dp"

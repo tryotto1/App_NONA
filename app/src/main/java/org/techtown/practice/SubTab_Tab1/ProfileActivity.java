@@ -2,6 +2,7 @@ package org.techtown.practice.SubTab_Tab1;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.utils.widget.ImageFilterView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +28,7 @@ import com.google.firebase.storage.StorageReference;
 import org.techtown.practice.Login_Signin.LoginActivity;
 import org.techtown.practice.R;
 import org.techtown.practice.SubTab_Drawer.DibActivity;
+import org.techtown.practice.SubTab_Drawer.MyChatActivity;
 import org.techtown.practice.SubTab_Drawer.MyWritingsActivity;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -34,10 +36,10 @@ public class ProfileActivity extends AppCompatActivity {
     String my_email, my_id;
 
     // 판매목록, 구매목록, 신뢰도
-    String str_list_write, str_list_dib, str_confidence;
+    String str_list_write, str_list_dib, str_list_chat, str_confidence;
 
     // xml 연결할 것들
-    ImageView img_profile;
+    ImageView img_profile, btn_back;
     TextView usr_email, usr_confidnce;
     Button btn_write, btn_dib, btn_chat, btn_re_profile;
     ImageView btn_logout;
@@ -60,6 +62,7 @@ public class ProfileActivity extends AppCompatActivity {
         /* xml 연결 */
         img_profile = (ImageView)findViewById(R.id.img_profile);
         usr_email = (TextView)findViewById(R.id.usr_email);
+        btn_back = (ImageView)findViewById(R.id.iv_back);
         btn_chat = (Button)findViewById(R.id.btn_profile_chat);
         btn_dib = (Button)findViewById(R.id.btn_profile_dib);
         btn_write = (Button)findViewById(R.id.btn_profile_my_writing);
@@ -84,6 +87,10 @@ public class ProfileActivity extends AppCompatActivity {
         str_list_dib = pref.getString("str_list_dib", "");
         String[] arr_my_dib = str_list_dib.split(",");
         int num_dib = arr_my_dib.length;
+
+        // 현재 내 채팅 목록 string 값 가져오기
+        str_list_chat = pref.getString("str_list_chat", "");
+        String[] arr_my_chat = str_list_dib.split(",");
 
         /* firebase에서 신뢰도 값 가져오기 */
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -126,7 +133,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        // 내가 대여한 글
+        // 내가 찜한 글
         btn_dib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,7 +153,15 @@ public class ProfileActivity extends AppCompatActivity {
         btn_chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 아직 구현 못함
+                // 모든 shared preference 저장값들을 삭제한다 - 부정 로그인 방지
+                SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("str_list_chat", str_list_chat);
+                editor.commit();
+
+                // my dib activity로 가기
+                Intent intent = new Intent(getApplicationContext(), MyChatActivity.class);
+                startActivity(intent);
             }
         });
 

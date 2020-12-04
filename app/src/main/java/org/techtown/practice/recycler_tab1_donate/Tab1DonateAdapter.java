@@ -1,4 +1,4 @@
-package org.techtown.practice.recycler_Search;
+package org.techtown.practice.recycler_tab1_donate;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,9 +23,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.techtown.practice.SubTab_Tab1.ChatActivity;
 import org.techtown.practice.R;
-import org.techtown.practice.recycler_MyWritings.MyWritingsData;
+import org.techtown.practice.SubTab_Tab1.ShowWrittenActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +35,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.CustomViewHolder> {
+public class Tab1DonateAdapter extends RecyclerView.Adapter<Tab1DonateAdapter.CustomViewHolder> {
+    // shared preference를 쓰기 위한 설정
     Context context;
 
     // 사진 Uri 가져오기 위한 firebase
@@ -49,18 +49,19 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.CustomView
     // firebase 데이터베이스를 가져온다
     FirebaseDatabase database;
 
-    private ArrayList<SearchData> arrayList; // 서버에서 받는 정보
+    private ArrayList<Tab1DonateData> arrayList; // 서버에서 받는 정보
 
-    public SearchAdapter(ArrayList<SearchData> arrayList, Context context) {
+    public Tab1DonateAdapter(ArrayList<Tab1DonateData> arrayList, Context context) {
+        // context를 전달받아야, shared preference를 쓸 수 있음
         this.context = context;
         this.arrayList = arrayList;
     }
 
     @NonNull
     @Override
-    public SearchAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Tab1DonateAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_poem, parent, false);
-        SearchAdapter.CustomViewHolder holder = new SearchAdapter.CustomViewHolder(view);
+        CustomViewHolder holder = new CustomViewHolder(view);
 
         // 사진을 저장하기 위한 레퍼런스 - 업로드
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -79,7 +80,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.CustomView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final SearchAdapter.CustomViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final Tab1DonateAdapter.CustomViewHolder holder, final int position) {
         holder.tv_title.setText(arrayList.get(position).getTitle());
         holder.tv_writer.setText(arrayList.get(position).getWriter());
         holder.tv_date.setText(arrayList.get(position).getDate());
@@ -120,31 +121,33 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.CustomView
 
                 // 토스트
                 Toast.makeText(context, "찜 했습니다", Toast.LENGTH_SHORT).show();
+
+                // 하트 색깔을 바꿔준다
+                holder.frag1_like.setImageResource(R.drawable.heart_red);
             }
         });
 
+        // 각 게시물을 클릭할 경우, 채팅을 시작한다
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 몇 번째 게시물인지 chatActivity에 전달한다
+                SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("idx_writing", arrayList.get(position).getIndex());
+                editor.putString("writer", arrayList.get(position).getWriter());
+                editor.putString("content_writing", arrayList.get(position).getContent());
+                editor.putString("title_writing", arrayList.get(position).getTitle());
+                editor.putString("date_writing", arrayList.get(position).getDate());
+                editor.putString("date_exchange", arrayList.get(position).getWrite_date_exchange());
+                editor.putString("place_exchange", arrayList.get(position).getWrite_place_exchange());
+                editor.commit();
 
-        if(arrayList.get(position)!=null) {
-            holder.tv_title.setText(arrayList.get(position).getTitle());
-
-            // 각 게시물을 클릭할 경우, 채팅을 시작한다
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // 몇 번째 게시물인지 chatActivity에 전달한다
-                    SharedPreferences pref = context.getSharedPreferences("pref", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.putString("idx_writing", arrayList.get(position).getIndex());
-                    editor.putString("writer", arrayList.get(position).getWriter());
-                    editor.putString("chat_usr", my_id);
-                    editor.commit();
-
-                    // 채팅을 시작한다
-                    Intent intent = new Intent(view.getContext(), ChatActivity.class);
-                    view.getContext().startActivity(intent);
-                }
-            });
-        }
+                // 게시물을 자세히 확인한다
+                Intent intent = new Intent(view.getContext(), ShowWrittenActivity.class);
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -162,6 +165,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.CustomView
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
+
         protected TextView tv_title, tv_writer, tv_date, tv_content;
         protected LinearLayout layout;
         protected ImageView device_img;

@@ -108,10 +108,10 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.CustomViewHold
         holder.frag1_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 전달할 시간 저장
-                Calendar c = Calendar.getInstance();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss aa");
-                String datetime = dateFormat.format(c.getTime());
+//                // 전달할 시간 저장
+//                Calendar c = Calendar.getInstance();
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss aa");
+//                String datetime = dateFormat.format(c.getTime());
 
                 // 관련 정보를 firebase에 새로 데이터베이스를 만들어서 저장
                 Hashtable<String, String> dib
@@ -119,7 +119,7 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.CustomViewHold
                 dib.put("dib", arrayList.get(position).getIndex());
 
                 // firebase 데이터베이스에 user 관련 정보를 저장해준다
-                database.getReference("user").child(my_id).child("my_dib").child(datetime).setValue(dib);
+                database.getReference("user").child(my_id).child("my_dib").child(arrayList.get(position).getIndex()).setValue(dib);
 
                 // 토스트
                 Toast.makeText(context, "찜 했습니다", Toast.LENGTH_SHORT).show();
