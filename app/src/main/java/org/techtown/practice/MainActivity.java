@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("내 지금 아이디", "onCreate: " + my_id);
 
         // 왼쪽 drawer menu 여는 코드
-        ImageButton btn_open = (ImageButton)findViewById(R.id.btn_open);
+        TextView btn_open = (TextView)findViewById(R.id.btn_open);
         btn_open.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -150,6 +150,12 @@ public class MainActivity extends AppCompatActivity {
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // 모든 shared preference 저장값들을 삭제한다 - 부정 로그인 방지
+                SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.remove("email");
+                editor.commit();
+
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
 

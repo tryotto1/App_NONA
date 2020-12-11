@@ -48,7 +48,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Frag1 extends Fragment {
     private View view;
-    private ImageView btn_write, btn_search;
+    private ImageView btn_write, btn_search, menu_drawer;
     private EditText search_txt;
 
     // 이메일, 아이디
@@ -130,6 +130,7 @@ public class Frag1 extends Fragment {
         tab1DonateAdapter = new Tab1DonateAdapter(arrayList_donate, getContext());
         recyclerView2.setAdapter(tab1DonateAdapter);
 
+
         /* button - 새로운 게시물 작성하기 */
         btn_write.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,6 +145,20 @@ public class Frag1 extends Fragment {
                     startActivity(intent);
                 }
 
+            }
+        });
+
+        /* 프로필 사진 누를때 프로필로 화면 이동 */
+        img_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences pref = getContext().getSharedPreferences("pref", getContext().MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("str_list_chat", "");
+                editor.commit();
+
+                Intent intent = new Intent(getContext(), ProfileActivity.class);
+                startActivity(intent);
             }
         });
 

@@ -108,11 +108,6 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.CustomViewHold
         holder.frag1_like.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                // 전달할 시간 저장
-//                Calendar c = Calendar.getInstance();
-//                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss aa");
-//                String datetime = dateFormat.format(c.getTime());
-
                 // 관련 정보를 firebase에 새로 데이터베이스를 만들어서 저장
                 Hashtable<String, String> dib
                         = new Hashtable<String, String>();

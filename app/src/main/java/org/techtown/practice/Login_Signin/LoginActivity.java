@@ -30,17 +30,27 @@ public class LoginActivity extends AppCompatActivity {
 
     // 로그인 하기 위해 받은 string 값
     String email, password;
+    String my_email, my_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // 모든 shared preference 저장값들을 삭제한다 - 부정 로그인 방지
+        // 현재 내 이메일 가져오기
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.remove("email");
-        editor.commit();
+        my_email = pref.getString("email", "");
+
+        // 저장된 로그 기록이 있을 경우, 바로 메인 함수로 넘어간다
+        if(my_email.equals("") == false){
+            Toast.makeText(LoginActivity.this, "안녕하세요!",
+                    Toast.LENGTH_LONG).show();
+
+            // 메인 화면으로 보낸다
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            LoginActivity.this.startActivity(intent);
+            finish();
+        }
 
         // 로그인용 파이어베이스 인스턴스 가져오기
         mAuth = FirebaseAuth.getInstance();

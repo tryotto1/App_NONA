@@ -56,15 +56,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-            <ImageButton
+            <TextView
                 android:id="@+id/btn_open"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="15dp"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+
+                android:fontFamily="@font/apple_sd_gothic_neo_b"
+                android:layout_marginLeft="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:background="@color/graywhite"
-                android:src="@drawable/menu" />
+                android:layout_marginTop="20dp"
+                android:background="@drawable/menu_white"
+                android:textColor="#ffffff"
+                android:elevation="10dp"
+                />
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewPager"
