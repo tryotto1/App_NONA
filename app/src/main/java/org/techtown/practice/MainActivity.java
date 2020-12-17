@@ -235,7 +235,12 @@ public class MainActivity extends AppCompatActivity {
                 String write_idx = dataSnapshot.getValue().toString();
 
                 str_list_chat += (write_idx+",");
-                Log.d("dib_idx", "onChildAdded: " + str_list_write);
+
+                // 몇 번째 게시물인지 chatActivity에 전달한다
+                SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("str_list_chat", str_list_chat);
+                editor.commit();
             }
 
             @Override

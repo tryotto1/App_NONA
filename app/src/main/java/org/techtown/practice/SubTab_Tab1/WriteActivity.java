@@ -211,6 +211,8 @@ public class WriteActivity extends AppCompatActivity {
                 editor.putString("writer", email_id);
                 editor.putString("content_writing", txt_content);
                 editor.putString("title_writing", title);
+                editor.putString("date_exchange", write_date_exchange.getText().toString());
+                editor.putString("place_exchange", write_place_exchange.getText().toString());
                 editor.commit();
 
                 Intent intent = new Intent(getApplicationContext(), ShowWrittenActivity.class);

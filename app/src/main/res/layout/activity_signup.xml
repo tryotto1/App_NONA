@@ -43,7 +43,7 @@
         android:id="@+id/tv_signup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/apple_sd_gothic_neo_h"
+        android:fontFamily="@font/apple_sd_gothic_neo_b"
         android:text="회원가입 완료"
         android:textColor="#999999"
         android:textSize="17sp"

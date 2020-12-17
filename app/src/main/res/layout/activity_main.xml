@@ -58,11 +58,11 @@
 
             <TextView
                 android:id="@+id/btn_open"
-                android:layout_width="30dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="15dp"
 
                 android:fontFamily="@font/apple_sd_gothic_neo_b"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="15dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="20dp"
@@ -82,10 +82,7 @@
 
             </androidx.viewpager.widget.ViewPager>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include layout="@layout/activity_drawer" />
-
-
 </androidx.drawerlayout.widget.DrawerLayout>

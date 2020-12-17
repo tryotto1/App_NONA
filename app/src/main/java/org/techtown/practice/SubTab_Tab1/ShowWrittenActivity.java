@@ -6,11 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,35 +16,20 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.techtown.practice.Login_Signin.LoginActivity;
 import org.techtown.practice.R;
-import org.techtown.practice.recycler_tab1.Tab1Data;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Hashtable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ShowWrittenActivity extends AppCompatActivity {
     // xml 연결용
-    ImageView iv_back, img_item, btn_one_write_chat, btn_one_write_buy, btn_one_write_dib;
+    ImageView iv_back, img_item, btn_one_write_chat, btn_one_write_trash, btn_one_write_dib;
     TextView one_write_title, one_write_content, written_writer_name, date_writing;
     TextView txt_date_exchange, txt_place_exchange;
     CircleImageView writer_img;
@@ -88,6 +71,7 @@ public class ShowWrittenActivity extends AppCompatActivity {
         img_item = findViewById(R.id.one_write_img);
         btn_one_write_chat = findViewById(R.id.btn_one_write_chat);
         btn_one_write_dib = findViewById(R.id.btn_one_write_dib);
+        btn_one_write_trash = findViewById(R.id.btn_one_write_trash);
         written_writer_name = findViewById(R.id.written_writer_name);
         date_writing = findViewById(R.id.written_writer_time);
         writer_img = findViewById(R.id.written_writer_img);
@@ -126,6 +110,23 @@ public class ShowWrittenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        /* 글 삭제하기 */
+        btn_one_write_trash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(my_id.equals(writer)==false) {
+                    Toast.makeText(ShowWrittenActivity.this, "자신이 쓴 글만 삭제할 수 있습니다",
+                            Toast.LENGTH_LONG).show();
+                }else{
+                    FirebaseDatabase.getInstance().getReference("writings").child(idx_writing).removeValue();
+
+                    Toast.makeText(ShowWrittenActivity.this, "삭제되었습니다",
+                            Toast.LENGTH_LONG).show();
+                    finish();
+                }
             }
         });
 
@@ -190,11 +191,6 @@ public class ShowWrittenActivity extends AppCompatActivity {
         btn_one_write_dib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                // 전달할 시간 저장
-//                Calendar c = Calendar.getInstance();
-//                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss aa");
-//                String datetime = dateFormat.format(c.getTime());
-
                 // 관련 정보를 firebase에 새로 데이터베이스를 만들어서 저장
                 Hashtable<String, String> dib
                         = new Hashtable<String, String>();

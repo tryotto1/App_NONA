@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +24,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.techtown.practice.SubTab_Tab1.ChatActivity;
 import org.techtown.practice.R;
 import org.techtown.practice.SubTab_Tab1.ShowWrittenActivity;
-import org.techtown.practice.Tabs.Frag1;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Hashtable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -94,13 +91,16 @@ public class Tab1Adapter extends RecyclerView.Adapter<Tab1Adapter.CustomViewHold
         picture_Ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
+                Log.d("11>>", "onBindViewHolder: " + arrayList.get(position).getTitle() + " " + arrayList.get(position).getWriter());
                 // glide 사용해서 사진 설정하기
                 Glide.with(holder.itemView.getContext()).load(uri).into(holder.writer_img);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
+                Log.d("22>>", "onBindViewHolder: " + arrayList.get(position).getTitle() + " " + arrayList.get(position).getWriter());
+                // glide 사용해서 사진 설정하기
+                Glide.with(holder.itemView.getContext()).load(R.drawable.pencil_blue).into(holder.writer_img);
             }
         });
 

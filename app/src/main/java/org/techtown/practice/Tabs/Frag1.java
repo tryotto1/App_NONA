@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -29,7 +28,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.techtown.practice.SubTab_Drawer.MyWritingsActivity;
 import org.techtown.practice.SubTab_Tab1.ProfileActivity;
 import org.techtown.practice.SubTab_Tab1.SearchActivity;
 import org.techtown.practice.SubTab_Tab1.WriteActivity;
@@ -41,7 +39,6 @@ import org.techtown.practice.recycler_tab1.Tab1Data;
 import org.techtown.practice.recycler_tab1_donate.Tab1DonateAdapter;
 import org.techtown.practice.recycler_tab1_donate.Tab1DonateData;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -152,11 +149,6 @@ public class Frag1 extends Fragment {
         img_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences pref = getContext().getSharedPreferences("pref", getContext().MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("str_list_chat", "");
-                editor.commit();
-
                 Intent intent = new Intent(getContext(), ProfileActivity.class);
                 startActivity(intent);
             }

@@ -183,9 +183,10 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginLeft="30dp"
+            android:src="@drawable/pencil_blue"
             android:id="@+id/written_writer_img"/>
         <TextView
-            android:layout_width="200dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/written_writer_img"
             app:layout_constraintTop_toTopOf="parent"
@@ -194,7 +195,7 @@
             android:fontFamily="@font/apple_sd_gothic_neo_b"
             android:id="@+id/written_writer_name"/>
         <TextView
-            android:layout_width="200dp"
+            android:layout_width="100dp"
             android:layout_marginLeft="15dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/written_writer_img"
@@ -202,6 +203,15 @@
             android:text="시간"
             android:fontFamily="@font/apple_sd_gothic_neo_b"
             android:id="@+id/written_writer_time"/>
+        <ImageView
+            android:layout_width="23dp"
+            android:layout_height="25dp"
+            android:src="@drawable/trash_can_gray2"
+            app:layout_constraintEnd_toStartOf="@id/btn_one_write_chat"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="8dp"
+            android:id="@+id/btn_one_write_trash"/>
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"

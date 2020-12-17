@@ -76,7 +76,6 @@ public class LoginActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
 
                                 if (task.isSuccessful()) {
-
                                     // 학교 이메일 인증이 완료됐을 경우만 로그인 가능
                                     if (mAuth.getCurrentUser().isEmailVerified()) {
                                         Toast.makeText(LoginActivity.this, "안녕하세요!",
@@ -94,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                                         finish();
                                     } else {
                                         // 완료가 덜 됐으므로 입장 불가능
-                                        Toast.makeText(LoginActivity.this, "인증을 완료하여 주세요",
+                                        Toast.makeText(LoginActivity.this, "학교 이메일을 확인하셔서 인증을 완료하여 주세요",
                                                 Toast.LENGTH_LONG).show();
                                     }
                                 }
