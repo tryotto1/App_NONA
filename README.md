@@ -6,7 +6,7 @@
 
 -----------
 ### 초기 화면
-<img src="/img/main_bg.jpg" width="20%" height="20%">   <img src="/img/signin.jpg" width="20%" height="20%">
+<img src="/img/main_bg.jpg" width="20%" height="20%">   <img src="/img/signin.jpg" width="20%" height="20%"> 
 - 회원가입과 아이디/비밀번호 찾기 기능이 있습니다.
    - 회원가입시, 반드시 고려대학교 계정만 가능합니다( ~ @korea.ac.kr계정)
    - 그 외 닉네임, 비밀번호, 학과도 특정 조건을 만족하는 사람만 가입가능합니다
@@ -21,10 +21,17 @@
 <img src="/img/search_by_tag_2.jpg" width="20%" height="20%"> <img src="/img/search_by_tag.jpg" width="20%" height="20%">
 - 검색 기능을 활용하여, 특정 tag 값을 가진 게시물들을 찾습니다
 
-<img src="/img/write_form.jpg" width="20%" height="20%">
+<img src="/img/write_form.jpg" width="20%" height="20%"> <br>
 - 게시물을 작성하는 form 입니다
    - tag 값, 만나는 장소, 시간 값을 입력해야 합니다
    - 사진을 추가할 수 있고, 내용과 제목을 작성해야 합니다
+
+<img src="/img/item_form.jpg" width="20%" height="20%"> <img src="/img/chat.jpg" width="20%" height="20%">
+- 게시물을 클릭하면 해당 물건 정보를 얻을 수 있습니다.
+   - 거래 희망 장소, 시간을 알 수 있습니다.
+   - 하트 이모티콘을 누르면 해당 게시물을 찜할 수 있습니다.
+   - 본인이 작성한 게시물의 경우, 쓰레기통 버튼을 누르면 해당 게시물을 삭제할 수 있습니다.
+   - 채팅 버튼을 눌러서 거래자와 채팅할 수 있습니다.
 
 --------------
 ### sub tab
@@ -32,7 +39,10 @@
 - 내 정보를 바꾸는 form 입니다.
    - 사진, 학과명을 바꿀 수 있습니다.
 
-<img src="/img/search_by_tag_2.jpg" width="20%" height="20%"> <img src="/img/search_by_tag.jpg" width="20%" height="20%">
+<img src="/img/left_tab.jpg" width="20%" height="20%"> <img src="/img/my_write.jpg" width="20%" height="20%"> <img src="/img/my_dib.jpg" width="20%" height="20%"> <img src="/img/my_chat_list.jpg" width="20%" height="20%">
+- 왼쪽 사이드바 메뉴를 누르면 위와 같은 목록을 확인할 수 있습니다.
+   - 내가 찜한 물품, 채팅하고 있는 게시물, 내가 작성한 게시물을 확인할 수 있습니다.
+   - 하단의 로그아웃 버튼을 누르면 로그아웃도 가능합니다.
 
 
 
