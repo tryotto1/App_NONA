@@ -5,6 +5,12 @@
 - 공동구매 플랫폼 어플리케이션 개발
 
 -----------
+
+- Firebase 기반의 간단한 서버 구축
+- 안드로이드 스튜디오 사용
+- Google Play 에 publish까지 최종 완료
+
+-----------
 ### 초기 화면
 <img src="/img/main_bg.jpg" width="20%" height="20%">   <img src="/img/signin.jpg" width="20%" height="20%"> 
 - 회원가입과 아이디/비밀번호 찾기 기능이 있습니다.
